@@ -1,0 +1,53 @@
+{
+  "_comment": "Override prototype platform defaults. Remove platforms you don't need to customize.",
+
+  "web": {
+    "framework": "react",
+    "language": "typescript",
+    "bundler": "vite",
+    "styling": "tailwind"
+  },
+
+  "mobile": {
+    "framework": "react-native",
+    "language": "typescript",
+    "platform": "expo"
+  },
+
+  "desktop": {
+    "framework": "electron",
+    "language": "typescript",
+    "ui": "react"
+  },
+
+  "cli": {
+    "language": "python",
+    "framework": "click"
+  },
+
+  "backend": {
+    "language": "python",
+    "framework": "fastapi",
+    "database": "sqlite"
+  },
+
+  "browser_extension": {
+    "language": "typescript",
+    "framework": "react",
+    "bundler": "vite"
+  },
+
+  "serverless": {
+    "provider": "cloudflare",
+    "language": "typescript"
+  },
+
+  "bot": {
+    "language": "typescript",
+    "runtime": "node"
+  },
+
+  "google_appsscript": {
+    "use_clasp": true
+  }
+}

@@ -1,0 +1,187 @@
+#!/usr/bin/env bash
+
+set -e
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Script directory (where this script is located)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+AGENTS_SOURCE="$REPO_ROOT/claude/agents"
+COMMANDS_SOURCE="$REPO_ROOT/claude/commands"
+CRITERIA_SOURCE="$REPO_ROOT/claude/production-criteria.md"
+PREFS_EXAMPLE_SOURCE="$REPO_ROOT/claude/prototype-preferences.example.json"
+
+# Default installation target
+AGENTS_TARGET_DIR="$HOME/.claude/agents"
+COMMANDS_TARGET_DIR="$HOME/.claude/commands"
+IS_PROJECT_INSTALL=false
+
+# Parse arguments
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --project)
+      if [[ -z "$2" ]]; then
+        echo -e "${RED}Error: --project requires a path argument${NC}"
+        exit 1
+      fi
+      AGENTS_TARGET_DIR="$2/.claude/agents"
+      COMMANDS_TARGET_DIR="$2/.claude/commands"
+      IS_PROJECT_INSTALL=true
+      shift 2
+      ;;
+    --help|-h)
+      echo "Usage: $0 [OPTIONS]"
+      echo ""
+      echo "Install Claude Code custom commands and configuration"
+      echo ""
+      echo "Options:"
+      echo "  --project <path>    Install to project directory instead of global"
+      echo "  --help, -h          Show this help message"
+      echo ""
+      echo "Examples:"
+      echo "  $0                           # Install globally to ~/.claude/"
+      echo "  $0 --project /path/to/proj   # Install to /path/to/proj/.claude/"
+      echo ""
+      echo "Available commands:"
+      echo "  /prototype   - Build rapid prototypes for 10+ platforms"
+      echo "  /audit       - Audit code and create action plan for current stage"
+      echo "  /ready       - Execute audit action plan (runs /audit if needed)"
+      exit 0
+      ;;
+    *)
+      echo -e "${RED}Error: Unknown option $1${NC}"
+      echo "Use --help for usage information"
+      exit 1
+      ;;
+  esac
+done
+
+# Validate source directories exist
+if [[ ! -d "$COMMANDS_SOURCE" ]] && [[ ! -d "$AGENTS_SOURCE" ]]; then
+  echo -e "${RED}Error: Source directories not found${NC}"
+  echo "Make sure you're running this script from the repository root"
+  exit 1
+fi
+
+# Create target directories
+echo -e "${BLUE}Creating target directories...${NC}"
+[[ -d "$AGENTS_SOURCE" ]] && mkdir -p "$AGENTS_TARGET_DIR"
+mkdir -p "$COMMANDS_TARGET_DIR"
+
+# Install agents (if they exist)
+if [[ -d "$AGENTS_SOURCE" ]]; then
+  AGENT_COUNT=$(find "$AGENTS_SOURCE" -maxdepth 1 -name "*.md" -not -name "README.md" 2>/dev/null | wc -l | tr -d ' ')
+
+  if [[ "$AGENT_COUNT" -gt 0 ]]; then
+    echo -e "${BLUE}Installing $AGENT_COUNT agent(s)...${NC}"
+    for agent in "$AGENTS_SOURCE"/*.md; do
+      # Skip README
+      if [[ "$(basename "$agent")" == "README.md" ]]; then
+        continue
+      fi
+
+      agent_name="$(basename "$agent")"
+      echo -e "  ${GREEN}✓${NC} Installing $agent_name"
+      cp "$agent" "$AGENTS_TARGET_DIR/"
+    done
+  fi
+fi
+
+# Count and install commands
+if [[ -d "$COMMANDS_SOURCE" ]]; then
+  COMMAND_COUNT=$(find "$COMMANDS_SOURCE" -maxdepth 1 -name "*.md" -not -name "README.md" | wc -l | tr -d ' ')
+
+  if [[ "$COMMAND_COUNT" -gt 0 ]]; then
+    echo -e "${BLUE}Installing $COMMAND_COUNT command(s)...${NC}"
+    for command in "$COMMANDS_SOURCE"/*.md; do
+      # Skip README
+      if [[ "$(basename "$command")" == "README.md" ]]; then
+        continue
+      fi
+
+      command_name="$(basename "$command")"
+      echo -e "  ${GREEN}✓${NC} Installing $command_name"
+      cp "$command" "$COMMANDS_TARGET_DIR/"
+    done
+  fi
+fi
+
+# Install preferences example if it doesn't exist
+if [[ "$IS_PROJECT_INSTALL" == true ]]; then
+  PREFS_TARGET="$(dirname "$AGENTS_TARGET_DIR")/prototype-preferences.json"
+  CRITERIA_TARGET="$(dirname "$AGENTS_TARGET_DIR")/production-criteria.md"
+else
+  PREFS_TARGET="$HOME/.claude/prototype-preferences.json"
+  CRITERIA_TARGET="$HOME/.claude/production-criteria.md"
+fi
+
+if [[ ! -f "$PREFS_TARGET" ]]; then
+  echo -e "${BLUE}Installing preferences template...${NC}"
+  if [[ -f "$PREFS_EXAMPLE_SOURCE" ]]; then
+    cp "$PREFS_EXAMPLE_SOURCE" "$PREFS_TARGET"
+    echo -e "  ${GREEN}✓${NC} Created $PREFS_TARGET"
+    echo -e "  ${YELLOW}→${NC} Edit this file to customize your platform preferences"
+  fi
+else
+  echo -e "${YELLOW}Preferences file already exists at $PREFS_TARGET (skipping)${NC}"
+fi
+
+# Install production criteria (always overwrite to get latest)
+if [[ -f "$CRITERIA_SOURCE" ]]; then
+  echo -e "${BLUE}Installing production criteria...${NC}"
+  cp "$CRITERIA_SOURCE" "$CRITERIA_TARGET"
+  echo -e "  ${GREEN}✓${NC} Installed production-criteria.md"
+fi
+
+# Success message
+echo ""
+echo -e "${GREEN}Installation complete!${NC}"
+echo ""
+
+if [[ "$IS_PROJECT_INSTALL" == true ]]; then
+  echo -e "Commands installed to: ${BLUE}$COMMANDS_TARGET_DIR${NC}"
+  [[ -d "$AGENTS_TARGET_DIR" ]] && echo -e "Agents installed to: ${BLUE}$AGENTS_TARGET_DIR${NC}"
+  echo -e "Configuration: ${BLUE}$(dirname "$COMMANDS_TARGET_DIR")${NC}"
+  echo ""
+  echo "To use in this project:"
+  echo -e "  ${BLUE}/prototype [description]${NC}   - Build a rapid prototype"
+  echo -e "  ${BLUE}/audit${NC}                     - Audit and create action plan"
+  echo -e "  ${BLUE}/ready${NC}                     - Execute the action plan"
+else
+  echo -e "Commands installed globally to: ${BLUE}$COMMANDS_TARGET_DIR${NC}"
+  [[ -d "$AGENTS_TARGET_DIR" ]] && echo -e "Agents installed globally to: ${BLUE}$AGENTS_TARGET_DIR${NC}"
+  echo -e "Configuration: ${BLUE}$HOME/.claude${NC}"
+  echo ""
+  echo "To use in any project:"
+  echo -e "  ${BLUE}/prototype [description]${NC}   - Build a rapid prototype"
+  echo -e "  ${BLUE}/audit${NC}                     - Audit and create action plan"
+  echo -e "  ${BLUE}/ready${NC}                     - Execute the action plan"
+fi
+
+if [[ -d "$AGENTS_SOURCE" ]] && [[ -n "$(find "$AGENTS_SOURCE" -maxdepth 1 -name "*.md" -not -name "README.md" 2>/dev/null)" ]]; then
+  echo ""
+  echo "Available agents:"
+  for agent in "$AGENTS_SOURCE"/*.md; do
+    if [[ "$(basename "$agent")" != "README.md" ]]; then
+      agent_name="$(basename "$agent" .md)"
+      echo -e "  • ${GREEN}$agent_name${NC}"
+    fi
+  done
+fi
+
+if [[ -d "$COMMANDS_SOURCE" ]] && [[ -n "$(find "$COMMANDS_SOURCE" -maxdepth 1 -name "*.md" -not -name "README.md" 2>/dev/null)" ]]; then
+  echo ""
+  echo "Available commands:"
+  for command in "$COMMANDS_SOURCE"/*.md; do
+    if [[ "$(basename "$command")" != "README.md" ]]; then
+      command_name="$(basename "$command" .md)"
+      echo -e "  • ${GREEN}/$command_name${NC}"
+    fi
+  done
+fi
