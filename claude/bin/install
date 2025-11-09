@@ -17,22 +17,24 @@ COMMANDS_SOURCE="$REPO_ROOT/claude/commands"
 CRITERIA_SOURCE="$REPO_ROOT/claude/production-criteria.md"
 PREFS_EXAMPLE_SOURCE="$REPO_ROOT/claude/prototype-preferences.example.json"
 
-# Default installation target
-AGENTS_TARGET_DIR="$HOME/.claude/agents"
-COMMANDS_TARGET_DIR="$HOME/.claude/commands"
-IS_PROJECT_INSTALL=false
+# Installation mode (will be set by args or interactive prompt)
+INSTALL_MODE=""
+PROJECT_PATH=""
 
 # Parse arguments
 while [[ $# -gt 0 ]]; do
   case $1 in
+    --global)
+      INSTALL_MODE="global"
+      shift
+      ;;
     --project)
       if [[ -z "$2" ]]; then
         echo -e "${RED}Error: --project requires a path argument${NC}"
         exit 1
       fi
-      AGENTS_TARGET_DIR="$2/.claude/agents"
-      COMMANDS_TARGET_DIR="$2/.claude/commands"
-      IS_PROJECT_INSTALL=true
+      INSTALL_MODE="project"
+      PROJECT_PATH="$2"
       shift 2
       ;;
     --help|-h)
@@ -41,11 +43,14 @@ while [[ $# -gt 0 ]]; do
       echo "Install Claude Code custom commands and configuration"
       echo ""
       echo "Options:"
-      echo "  --project <path>    Install to project directory instead of global"
+      echo "  --global            Install globally to ~/.claude/ (available in all projects)"
+      echo "  --project <path>    Install to project directory (only available in that project)"
       echo "  --help, -h          Show this help message"
       echo ""
       echo "Examples:"
-      echo "  $0                           # Install globally to ~/.claude/"
+      echo "  $0                           # Interactive mode - asks where to install"
+      echo "  $0 --global                  # Install globally to ~/.claude/"
+      echo "  $0 --project .               # Install to current project (./.claude/)"
       echo "  $0 --project /path/to/proj   # Install to /path/to/proj/.claude/"
       echo ""
       echo "Available commands:"
@@ -61,6 +66,49 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
+
+# If no installation mode specified, ask the user
+if [[ -z "$INSTALL_MODE" ]]; then
+  echo -e "${BLUE}Where would you like to install the Claude Code commands?${NC}"
+  echo ""
+  echo "1) Global installation (${HOME}/.claude/)"
+  echo "   → Commands available in all projects"
+  echo "   → Good for personal development machine"
+  echo ""
+  echo "2) Project installation ($(pwd)/.claude/)"
+  echo "   → Commands only available in this project"
+  echo "   → Good for sharing with team via git"
+  echo ""
+  read -p "Choose [1/2]: " choice
+
+  case $choice in
+    1)
+      INSTALL_MODE="global"
+      echo -e "${GREEN}Installing globally to ~/.claude/${NC}"
+      ;;
+    2)
+      INSTALL_MODE="project"
+      PROJECT_PATH="$(pwd)"
+      echo -e "${GREEN}Installing to project at $(pwd)/.claude/${NC}"
+      ;;
+    *)
+      echo -e "${RED}Invalid choice. Exiting.${NC}"
+      exit 1
+      ;;
+  esac
+  echo ""
+fi
+
+# Set target directories based on mode
+if [[ "$INSTALL_MODE" == "global" ]]; then
+  AGENTS_TARGET_DIR="$HOME/.claude/agents"
+  COMMANDS_TARGET_DIR="$HOME/.claude/commands"
+  IS_PROJECT_INSTALL=false
+else
+  AGENTS_TARGET_DIR="$PROJECT_PATH/.claude/agents"
+  COMMANDS_TARGET_DIR="$PROJECT_PATH/.claude/commands"
+  IS_PROJECT_INSTALL=true
+fi
 
 # Validate source directories exist
 if [[ ! -d "$COMMANDS_SOURCE" ]] && [[ ! -d "$AGENTS_SOURCE" ]]; then
@@ -87,7 +135,13 @@ if [[ -d "$AGENTS_SOURCE" ]]; then
       fi
 
       agent_name="$(basename "$agent")"
-      echo -e "  ${GREEN}✓${NC} Installing $agent_name"
+      target_file="$AGENTS_TARGET_DIR/$agent_name"
+
+      if [[ -f "$target_file" ]]; then
+        echo -e "  ${YELLOW}↻${NC} Updating $agent_name"
+      else
+        echo -e "  ${GREEN}✓${NC} Installing $agent_name"
+      fi
       cp "$agent" "$AGENTS_TARGET_DIR/"
     done
   fi
@@ -106,7 +160,13 @@ if [[ -d "$COMMANDS_SOURCE" ]]; then
       fi
 
       command_name="$(basename "$command")"
-      echo -e "  ${GREEN}✓${NC} Installing $command_name"
+      target_file="$COMMANDS_TARGET_DIR/$command_name"
+
+      if [[ -f "$target_file" ]]; then
+        echo -e "  ${YELLOW}↻${NC} Updating $command_name"
+      else
+        echo -e "  ${GREEN}✓${NC} Installing $command_name"
+      fi
       cp "$command" "$COMMANDS_TARGET_DIR/"
     done
   fi
@@ -135,8 +195,12 @@ fi
 # Install production criteria (always overwrite to get latest)
 if [[ -f "$CRITERIA_SOURCE" ]]; then
   echo -e "${BLUE}Installing production criteria...${NC}"
+  if [[ -f "$CRITERIA_TARGET" ]]; then
+    echo -e "  ${YELLOW}↻${NC} Updating production-criteria.md"
+  else
+    echo -e "  ${GREEN}✓${NC} Installing production-criteria.md"
+  fi
   cp "$CRITERIA_SOURCE" "$CRITERIA_TARGET"
-  echo -e "  ${GREEN}✓${NC} Installed production-criteria.md"
 fi
 
 # Success message
