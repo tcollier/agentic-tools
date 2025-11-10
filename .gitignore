@@ -1,14 +1,2 @@
 scratch/
 .claude/
-
-# Node.js
-node_modules/
-package-lock.json
-
-# Environment variables
-.env
-
-# Promptfoo testing
-promptfoo-results.json
-.promptfoo/
-promptfoo-cache/

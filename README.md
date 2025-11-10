@@ -149,26 +149,6 @@ After installation:
 - Size-aware evaluation strategy
 - User choice of tracking method (beads or TodoWrite)
 
-## Testing
-
-This project includes comprehensive testing using [promptfoo](https://www.promptfoo.dev/):
-
-```bash
-# Install dependencies
-npm install
-
-# Set API key
-export ANTHROPIC_API_KEY="your-key-here"
-
-# Run tests
-npm test
-
-# View results in web UI
-npm run test:ui
-```
-
-See [TESTING.md](TESTING.md) for detailed testing documentation.
-
 ## Contributing
 
 Found a bug or have a suggestion? Open an issue or PR!
