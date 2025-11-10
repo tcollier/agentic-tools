@@ -15,18 +15,33 @@ Evaluate your codebase against stage-appropriate criteria and create an actionab
 
 ## Installation
 
-### Interactive Install (Recommended)
+### Quick Install (One-Liner)
+
+**Interactive (recommended):**
+```bash
+curl -fsSL https://raw.githubusercontent.com/tcollier/agentic-tools/main/claude/bin/install | bash
+```
+
+**Global install (all projects):**
+```bash
+curl -fsSL https://raw.githubusercontent.com/tcollier/agentic-tools/main/claude/bin/install | bash -s -- --global
+```
+
+**Project-specific install:**
+```bash
+curl -fsSL https://raw.githubusercontent.com/tcollier/agentic-tools/main/claude/bin/install | bash -s -- --project .
+```
+
+### Install from Cloned Repo
+
+If you've already cloned the repository:
+
+**Interactive:**
 ```bash
 claude/bin/install
 ```
 
-The installer will ask whether you want:
-1. **Global installation** (`~/.claude/`) - Available in all your projects
-2. **Project installation** (`<project>/.claude/`) - Only available in this project (good for teams)
-
-### Non-Interactive Install
-
-**Global (all projects):**
+**Global:**
 ```bash
 claude/bin/install --global
 ```
@@ -34,11 +49,6 @@ claude/bin/install --global
 **Project-specific:**
 ```bash
 claude/bin/install --project .
-```
-
-**Remote project:**
-```bash
-claude/bin/install --project /path/to/project
 ```
 
 ## Company Stages
