@@ -8,10 +8,15 @@ Stage-aware codebase auditing for Claude Code that helps you evaluate and improv
 Evaluate your codebase against stage-appropriate criteria and create an actionable plan:
 - Identifies your company stage (6 stages from Exploratory to Established)
 - Intelligently handles codebases of all sizes (simple, medium, or large)
-- For large codebases: breaks into modules and audits separately
-- Creates concrete, implementation-ready action items
-- Optional: Uses [beads](https://github.com/steveyegge/beads) for persistent issue tracking (auto-installs if you want it)
-- Fallback: Uses TodoWrite for session-local todos
+- For large codebases: breaks into modules and evaluates separately
+- **Generates `AUDIT.md`** - comprehensive report with:
+  - Stage-specific criteria evaluated
+  - Objective findings (✅/❌) for each criterion
+  - Priority-ordered action items (P0, P1, P2)
+  - For large repos: per-module breakdown + repo-wide overview
+- Creates actionable issues/todos:
+  - Optional: Uses [beads](https://github.com/steveyegge/beads) for persistent tracking (auto-installs if you want it)
+  - Fallback: Uses TodoWrite for session-local todos
 
 ## Installation
 
@@ -121,14 +126,18 @@ bd init
 # 2. Assess codebase size and structure
 # 3. For large codebases: identify modules
 # 4. Explore the codebase (whole or by module)
-# 5. Create specific action items (beads or TodoWrite)
-# 6. Provide readiness score(s) and summary
-# 7. Tell you what to skip (doesn't matter yet)
+# 5. Evaluate against stage-appropriate criteria
+# 6. Generate AUDIT.md with findings and action plan
+# 7. Create actionable issues (beads) or todos (TodoWrite)
+# 8. Provide readiness score(s) and summary
+
+# Review the comprehensive audit report:
+cat AUDIT.md         # Detailed findings, criteria, and action items
 
 # View action items with beads:
 bd ready             # See what's ready to work on
 bd list --priority 0 # See critical items
-bd list -l module:api # See API-specific items
+bd list -l module:api # See API-specific items (large repos)
 
 # Or implement todos manually if using TodoWrite
 ```

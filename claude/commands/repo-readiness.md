@@ -112,7 +112,181 @@ Evaluate your repository's readiness for your current company stage, producing a
    - **Stage-appropriate:** Only include what matters for their current stage
    - **Module-scoped (for large codebases):** Clearly indicate which module each item belongs to
 
-8. **Generate summary report:** After creating action items, provide a brief summary report
+8. **Generate AUDIT.md file:** Create a comprehensive audit document at the repository root
+
+   **For Simple/Medium codebases:**
+
+   Create `AUDIT.md` with the following structure:
+   ```markdown
+   # Repository Readiness Audit
+
+   **Stage:** [Stage Name]
+   **Date:** [Current Date]
+   **Overall Readiness:** [X/10]
+
+   ## Stage-Appropriate Criteria
+
+   For Stage [N] ([Stage Name]), the following criteria apply:
+
+   ### Critical (Must Have)
+   - [List P0 criteria from production-criteria.md]
+
+   ### Important (Should Have)
+   - [List P1 criteria]
+
+   ### Nice to Have
+   - [List P2 criteria]
+
+   ### Intentionally Excluded
+   - [List what doesn't matter at this stage]
+
+   ## Findings
+
+   ### Version Control
+   - ✅ Git repository initialized
+   - ❌ `.gitignore` missing Python patterns (see AUDIT-001)
+   - ✅ No secrets in repository
+
+   ### Documentation
+   - ❌ README.md missing (see AUDIT-002)
+   - ❌ No setup instructions (see AUDIT-003)
+
+   [Continue for all criteria categories...]
+
+   ## Priority Action Items
+
+   ### P0 - Critical (Must Fix)
+
+   **AUDIT-001:** Add .gitignore with Python patterns
+   - File: `.gitignore`
+   - Add patterns: `*.pyc`, `__pycache__/`, `.env`, `venv/`
+   - Criterion: Version Control
+
+   **AUDIT-002:** Create README.md with project overview
+   - File: `README.md`
+   - Include: project description, setup instructions, usage examples
+   - Criterion: Documentation
+
+   ### P1 - Important (Should Fix Soon)
+
+   [Ordered list of P1 items...]
+
+   ### P2 - Nice to Have (Consider Later)
+
+   [Ordered list of P2 items...]
+
+   ## What Doesn't Matter Yet
+
+   At Stage [N], you should intentionally skip:
+   - [List items to ignore]
+
+   ## Next Steps
+
+   1. Focus on P0 items first
+   2. [Beads-specific or TodoWrite-specific instructions]
+   3. Re-run `/repo-readiness` after implementing changes to track progress
+   ```
+
+   **For Large codebases (module-based):**
+
+   Create `AUDIT.md` with the following structure:
+   ```markdown
+   # Repository Readiness Audit
+
+   **Stage:** [Stage Name]
+   **Date:** [Current Date]
+   **Overall Readiness:** [X/10]
+
+   ## Repository Overview
+
+   ### Module Readiness Summary
+
+   | Module | Readiness | P0 Items | P1 Items | Status |
+   |--------|-----------|----------|----------|---------|
+   | Backend API | 7/10 | 2 | 5 | Good - minor gaps |
+   | Web Frontend | 5/10 | 5 | 8 | Needs attention |
+   | Mobile App | 4/10 | 7 | 6 | Critical gaps |
+   | Shared Libs | 8/10 | 1 | 2 | Excellent |
+
+   ### Repository-Wide Priority Items
+
+   Top critical issues across all modules:
+
+   **P0-001 [Frontend]:** Add error boundaries to React components
+   **P0-002 [Mobile]:** Implement offline error handling
+   **P0-003 [API]:** Add rate limiting to public endpoints
+   **P0-004 [Frontend]:** Add loading states for async operations
+   **P0-005 [Cross-cutting]:** Set up centralized logging
+
+   [List top 10-15 P0 items across all modules]
+
+   ### Cross-Cutting Concerns
+
+   Issues affecting multiple modules:
+   - **Logging:** No centralized logging (affects all modules)
+   - **Monitoring:** No observability tooling (affects API, Frontend, Mobile)
+   - **CI/CD:** No automated deployment pipeline
+
+   ## Stage-Appropriate Criteria
+
+   [Same as simple repo structure]
+
+   ## Module: Backend API
+
+   **Technology:** Python/FastAPI
+   **Location:** `src/api/`
+   **Readiness:** 7/10
+
+   ### Findings
+
+   #### Version Control
+   - ✅ Module has proper structure
+   - ✅ No secrets in code
+
+   #### Testing
+   - ✅ Unit tests present (85% coverage)
+   - ❌ Missing integration tests (see API-001)
+
+   [Continue for all criteria...]
+
+   ### Priority Action Items
+
+   #### P0 - Critical
+
+   **API-001:** Add integration tests for authentication flow
+   - Files: `tests/integration/test_auth.py`
+   - Test: login, logout, token refresh, password reset
+   - Criterion: Testing
+
+   #### P1 - Important
+
+   [P1 items for this module...]
+
+   ## Module: Web Frontend
+
+   [Same structure as Backend API section...]
+
+   ## Module: Mobile App
+
+   [Same structure...]
+
+   ## Module: Shared Libraries
+
+   [Same structure...]
+
+   ## What Doesn't Matter Yet
+
+   [Same as simple repo structure]
+
+   ## Next Steps
+
+   1. Address repository-wide P0 items first (see Repository-Wide Priority Items)
+   2. Focus on modules with lowest readiness scores (Mobile App, Web Frontend)
+   3. [Beads-specific or TodoWrite-specific instructions]
+   4. Re-run `/repo-readiness` after implementing changes to track progress
+   ```
+
+9. **Provide summary in chat:** After creating AUDIT.md and action items, provide a brief summary
 
 ## Beads Issues (Recommended)
 
@@ -162,140 +336,111 @@ bd dep add bd-<child> bd-a1b2 --type blocks
 - "Add documentation"
 - "Improve configuration"
 
-## Summary Report
+## Chat Summary
 
-After creating action items, provide a brief summary:
+After creating AUDIT.md and action items (beads or TodoWrite), provide a brief summary in chat to confirm completion:
 
 **With beads (Simple/Medium codebase):**
 ```markdown
-# Readiness Report - [Stage Name]
+✅ Repository readiness audit complete!
 
-## Readiness: [X/10]
-- ✅ [Y] critical items complete
-- ❌ [Z] items need attention
+**Created:**
+- `AUDIT.md` - Comprehensive audit report with findings and action items
+- [count] beads issues ([X] P0, [Y] P1, [Z] P2)
 
-## What's Working
-[2-3 key strengths for the stage]
+**Overall Readiness:** [X/10]
 
-## Action Items Created
-- P0 (Critical): [count] issues - [list IDs: bd-a1b2, bd-f14c]
-- P1 (Important): [count] issues - [list IDs: bd-3e7a, bd-b5c9]
+**Top Priorities (P0):**
+- bd-a1b2: [Brief description]
+- bd-f14c: [Brief description]
+- [List top 3-5 P0 items]
 
-Use `bd ready` to see ready work, or `bd list --priority 0` for critical items.
-
-## What Doesn't Matter Yet
-[Explicitly list 3-5 things to ignore for this stage]
-- Example: Tests (Stage 2 - iterate fast)
-- Example: Cost optimization (Stage 4 - not at scale)
-
-## Next Steps
-- Run `bd ready` to see what's ready to work on
-- Or implement manually: `bd show <issue-id>` for details
+**Next Steps:**
+1. Review `AUDIT.md` for detailed findings
+2. Run `bd ready` to see ready work
+3. Run `bd list --priority 0` for all critical items
 ```
 
 **With beads (Large codebase - module breakdown):**
 ```markdown
-# Readiness Report - [Stage Name]
+✅ Repository readiness audit complete!
 
-## Codebase Structure
-Analyzed [N] modules:
-1. **Backend API** (src/api) - Python/FastAPI - Readiness: 7/10
-2. **Web Frontend** (src/web) - React/TypeScript - Readiness: 5/10
-3. **Mobile App** (src/mobile) - React Native - Readiness: 4/10
-4. **Shared Libraries** (src/shared) - TypeScript - Readiness: 8/10
+**Created:**
+- `AUDIT.md` - Comprehensive multi-module audit with repo-wide overview
+- [count] beads issues across [N] modules ([X] P0, [Y] P1, [Z] P2)
 
-## Overall Readiness: [X/10]
-- ✅ [Y] critical items complete
-- ❌ [Z] items need attention across all modules
+**Overall Readiness:** [X/10]
 
-## Module Highlights
+**Module Summary:**
+- Backend API: 7/10 (2 P0, 5 P1)
+- Web Frontend: 5/10 (5 P0, 8 P1) ⚠️ Needs attention
+- Mobile App: 4/10 (7 P0, 6 P1) ⚠️ Critical gaps
+- Shared Libs: 8/10 (1 P0, 2 P1)
 
-### Backend API (Readiness: 7/10)
-- ✅ Good: Tests, error handling, API docs
-- ❌ Missing: Monitoring, rate limiting
+**Top Repository-Wide Priorities:**
+- P0-001 [Frontend]: Add error boundaries
+- P0-002 [Mobile]: Implement offline error handling
+- P0-003 [API]: Add rate limiting
+- P0-004 [Cross-cutting]: Set up centralized logging
+- [List top 5-7 P0 items]
 
-### Web Frontend (Readiness: 5/10)
-- ✅ Good: Component structure, TypeScript
-- ❌ Missing: Error boundaries, loading states, tests
-
-### Mobile App (Readiness: 4/10)
-- ✅ Good: Navigation setup
-- ❌ Missing: Offline support, error handling, tests
-
-### Shared Libraries (Readiness: 8/10)
-- ✅ Good: Well-documented, tested, typed
-- ❌ Missing: Changelog
-
-## Action Items Created
-- P0 (Critical): [count] issues
-  - module:api: [bd-a1b2, bd-f14c]
-  - module:web: [bd-3e7a, bd-b5c9]
-  - cross-cutting: [bd-x1y2]
-- P1 (Important): [count] issues
-
-Use `bd list -l module:api` to see API-specific items, or `bd list -l cross-cutting` for infrastructure work.
-
-## What Doesn't Matter Yet
-[Stage-appropriate exclusions]
-
-## Next Steps
-- Run `bd ready` to see what's ready to work on
-- Or implement by module: `bd list -l module:api --priority 0`
+**Next Steps:**
+1. Review `AUDIT.md` for detailed per-module findings and repo-wide overview
+2. Focus on modules with lowest scores (Mobile App, Web Frontend)
+3. Run `bd ready` or `bd list -l cross-cutting --priority 0` for top items
 ```
 
 **With TodoWrite (Simple/Medium codebase):**
 ```markdown
-# Readiness Report - [Stage Name]
+✅ Repository readiness audit complete!
 
-## Readiness: [X/10]
-- ✅ [Y] critical items complete
-- ❌ [Z] items need attention
+**Created:**
+- `AUDIT.md` - Comprehensive audit report with findings and action items
+- [count] todos ([X] P0, [Y] P1, [Z] P2)
 
-## What's Working
-[2-3 key strengths for the stage]
+**Overall Readiness:** [X/10]
 
-## Gaps to Address
-[High-level overview - details are in todos]
-- Critical: [count] items
-- Important: [count] items
+**Top Priorities (P0):**
+1. [Brief description]
+2. [Brief description]
+3. [Brief description]
 
-Note: TodoWrite items won't persist across sessions. Consider installing beads for better tracking.
+**Next Steps:**
+1. Review `AUDIT.md` for detailed findings
+2. Execute todos manually (note: won't persist across sessions)
+3. Consider installing beads for persistent tracking
 
-## What Doesn't Matter Yet
-[Explicitly list 3-5 things to ignore for this stage]
-- Example: Tests (Stage 2 - iterate fast)
-- Example: Cost optimization (Stage 4 - not at scale)
-
-## Next Steps
-Execute todos manually.
+Note: TodoWrite items won't persist. Consider running the beads installer when prompted.
 ```
 
 **With TodoWrite (Large codebase):**
 ```markdown
-# Readiness Report - [Stage Name]
+✅ Repository readiness audit complete!
 
-## Codebase Structure
-Analyzed [N] modules with individual readiness scores
+**Created:**
+- `AUDIT.md` - Comprehensive multi-module audit with repo-wide overview
+- [count] todos across [N] modules ([X] P0, [Y] P1, [Z] P2)
 
-## Overall Readiness: [X/10]
-- ✅ [Y] critical items complete
-- ❌ [Z] items need attention across all modules
+**Overall Readiness:** [X/10]
 
-## Module Breakdown
-- **Backend API** (7/10) - [X] items
-- **Web Frontend** (5/10) - [Y] items
-- **Mobile App** (4/10) - [Z] items
-- **Cross-cutting** - [W] items
+**Module Summary:**
+- Backend API: 7/10 ([X] items)
+- Web Frontend: 5/10 ([Y] items) ⚠️ Needs attention
+- Mobile App: 4/10 ([Z] items) ⚠️ Critical gaps
+- Shared Libs: 8/10 ([W] items)
 
-## Gaps to Address
-Todos are prefixed with module names: [API], [Web], [Mobile], [Cross-cutting]
-- Critical: [count] items
-- Important: [count] items
+**Top Repository-Wide Priorities:**
+1. [Frontend] Add error boundaries
+2. [Mobile] Implement offline error handling
+3. [API] Add rate limiting
+4. [Cross-cutting] Set up centralized logging
 
-Note: TodoWrite items won't persist across sessions. Consider installing beads for better module tracking.
+**Next Steps:**
+1. Review `AUDIT.md` for detailed per-module findings and repo-wide overview
+2. Execute todos manually by module (prefixed with [Module])
+3. Consider installing beads for better multi-module tracking
 
-## Next Steps
-Execute todos manually by module.
+Note: TodoWrite items won't persist. Consider running the beads installer for better tracking.
 ```
 
 ## Approach
