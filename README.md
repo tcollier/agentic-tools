@@ -64,6 +64,8 @@ The command understands 6 company stages:
 | **5. Hypergrowth** | $1M+ MRR | 50-500+ | 500-10K+ | Everything + performance |
 | **6. Established** | Varies | Varies | Varies | Excellence + efficiency |
 
+**Note:** These metrics are approximate guidelines, not strict rules. Team size refers to the entire company (not just engineers). Choose the stage that best matches your current reality - companies may skip stages, pivot, or grow non-linearly.
+
 The command only flags what matters for YOUR stage, preventing both under-engineering and over-engineering.
 
 ## Module-Based Audits

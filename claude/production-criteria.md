@@ -6,6 +6,8 @@ This document defines what makes a codebase production-ready based on company st
 
 Not all companies follow this linearly - choose the stage that best matches your current reality. Teams may pivot, plateau, or skip stages entirely.
 
+**Note:** The metrics below (revenue, team size, customers) are approximate guidelines, not hard-and-fast rules. Team size refers to the entire company, not just engineers. Use the "Key Signal" column to help identify your stage.
+
 | Stage | Revenue | Team Size | Customers | Key Signal |
 |-------|---------|-----------|-----------|------------|
 | **1. Exploratory** | $0 | 1-3 | 0 | Building prototypes to learn |
