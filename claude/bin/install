@@ -104,7 +104,7 @@ if [[ -z "$INSTALL_MODE" ]]; then
   echo "   → Commands only available in this project"
   echo "   → Good for sharing with team via git"
   echo ""
-  read -p "Choose [1/2]: " choice
+  read -p "Choose [1/2]: " choice </dev/tty
 
   case $choice in
     1)
