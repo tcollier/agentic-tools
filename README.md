@@ -4,7 +4,7 @@ Stage-aware codebase auditing for Claude Code that helps you evaluate and improv
 
 ## Command
 
-### `/audit`
+### `/repo-readiness`
 Evaluate your codebase against stage-appropriate criteria and create an actionable plan:
 - Identifies your company stage (6 stages from Exploratory to Established)
 - Intelligently handles codebases of all sizes (simple, medium, or large)
@@ -43,7 +43,7 @@ claude/bin/install --project /path/to/project
 
 ## Company Stages
 
-The audit command understands 6 company stages:
+The command understands 6 company stages:
 
 | Stage | Revenue | Team Size | Customers | What Matters |
 |-------|---------|-----------|-----------|--------------|
@@ -58,7 +58,7 @@ The command only flags what matters for YOUR stage, preventing both under-engine
 
 ## Module-Based Audits
 
-For large codebases (>200 files or 4+ modules), `/audit` intelligently breaks down the evaluation:
+For large codebases (>200 files or 4+ modules), `/repo-readiness` intelligently breaks down the evaluation:
 
 ### Automatic Detection
 - **Simple** (<50 files): Single-pass audit
@@ -80,7 +80,7 @@ For large codebases, automatically detects:
 
 ## Beads Integration (Optional)
 
-The `/audit` command can optionally use [beads](https://github.com/steveyegge/beads) for persistent issue tracking:
+The `/repo-readiness` command can optionally use [beads](https://github.com/steveyegge/beads) for persistent issue tracking:
 
 **Benefits:**
 - Issues persist across Claude Code sessions (git-backed)
@@ -90,7 +90,7 @@ The `/audit` command can optionally use [beads](https://github.com/steveyegge/be
 - Built for AI agents
 
 **Auto-install:**
-When you run `/audit` for the first time, it will offer to install beads for you. Just say yes!
+When you run `/repo-readiness` for the first time, it will offer to install beads for you. Just say yes!
 
 **Manual install:**
 ```bash
@@ -102,7 +102,7 @@ bd init
 
 ```bash
 # In Claude Code
-/audit
+/repo-readiness
 
 # Claude will:
 # 1. Ask what stage your company is at
@@ -127,7 +127,7 @@ After installation:
 ```
 .claude/                           # or ~/.claude/ for global
 ├── commands/
-│   └── audit.md                  # Stage-aware audit command
+│   └── repo-readiness.md         # Stage-aware readiness evaluation
 └── production-criteria.md        # 6 stages + what matters at each
 ```
 

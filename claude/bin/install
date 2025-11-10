@@ -54,7 +54,7 @@ while [[ $# -gt 0 ]]; do
       echo "  $0 --project /path/to/proj   # Install to /path/to/proj/.claude/"
       echo ""
       echo "Available commands:"
-      echo "  /audit       - Audit code and create action plan for current stage"
+      echo "  /repo-readiness - Evaluate repo readiness for current company stage"
       exit 0
       ;;
     *)
@@ -198,14 +198,14 @@ if [[ "$IS_PROJECT_INSTALL" == true ]]; then
   echo -e "Configuration: ${BLUE}$(dirname "$COMMANDS_TARGET_DIR")${NC}"
   echo ""
   echo "To use in this project:"
-  echo -e "  ${BLUE}/audit${NC}   - Audit code and create stage-appropriate action plan"
+  echo -e "  ${BLUE}/repo-readiness${NC}   - Evaluate repo readiness for current stage"
 else
   echo -e "Commands installed globally to: ${BLUE}$COMMANDS_TARGET_DIR${NC}"
   [[ -d "$AGENTS_TARGET_DIR" ]] && echo -e "Agents installed globally to: ${BLUE}$AGENTS_TARGET_DIR${NC}"
   echo -e "Configuration: ${BLUE}$HOME/.claude${NC}"
   echo ""
   echo "To use in any project:"
-  echo -e "  ${BLUE}/audit${NC}   - Audit code and create stage-appropriate action plan"
+  echo -e "  ${BLUE}/repo-readiness${NC}   - Evaluate repo readiness for current stage"
 fi
 
 if [[ -d "$AGENTS_SOURCE" ]] && [[ -n "$(find "$AGENTS_SOURCE" -maxdepth 1 -name "*.md" -not -name "README.md" 2>/dev/null)" ]]; then

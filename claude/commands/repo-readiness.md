@@ -1,8 +1,8 @@
-# Audit Command
+# Repo Readiness Command
 
-Perform a stage-appropriate technical audit of this codebase, producing a concrete action plan for improvements.
+Evaluate your repository's readiness for your current company stage, producing a concrete action plan for improvements.
 
-**Purpose:** This command evaluates the codebase and creates an implementation-ready action plan.
+**Purpose:** This command assesses your codebase against stage-appropriate production criteria and creates an implementation-ready action plan.
 
 ## Process
 
@@ -36,15 +36,15 @@ Perform a stage-appropriate technical audit of this codebase, producing a concre
 
    Show the stage descriptions from the criteria doc to help them choose.
 
-3. **Assess codebase size and structure:** Quickly survey the repository to determine audit strategy:
+3. **Assess codebase size and structure:** Quickly survey the repository to determine evaluation strategy:
    - Run `find . -type f -name "*.js" -o -name "*.ts" -o -name "*.py" -o -name "*.go" -o -name "*.java" -o -name "*.rb" -o -name "*.php" | wc -l` to count code files
    - Check for monorepo structure (packages/*, apps/*, services/*)
    - Identify distinct tech stacks or domains
 
    **Size classification:**
-   - **Simple** (<50 files, single purpose): Audit as a whole
-   - **Medium** (50-200 files, or 2-3 modules): Audit as a whole with extra attention to structure
-   - **Large** (>200 files, or 4+ distinct modules): Break into modules and audit separately
+   - **Simple** (<50 files, single purpose): Evaluate as a whole
+   - **Medium** (50-200 files, or 2-3 modules): Evaluate as a whole with extra attention to structure
+   - **Large** (>200 files, or 4+ distinct modules): Break into modules and evaluate separately
 
 4. **Identify modules (for Large codebases only):**
 
@@ -54,7 +54,7 @@ Perform a stage-appropriate technical audit of this codebase, producing a concre
    - **Service boundaries:** For microservices, each service/* directory
    - **Domain boundaries:** If organized by feature (auth/, billing/, notifications/)
 
-   List the modules you'll audit separately. Example:
+   List the modules you'll evaluate separately. Example:
    ```
    Modules identified:
    1. Backend API (src/api) - Python FastAPI
@@ -168,7 +168,7 @@ After creating action items, provide a brief summary:
 
 **With beads (Simple/Medium codebase):**
 ```markdown
-# Audit Summary - [Stage Name]
+# Readiness Report - [Stage Name]
 
 ## Readiness: [X/10]
 - ✅ [Y] critical items complete
@@ -195,7 +195,7 @@ Use `bd ready` to see ready work, or `bd list --priority 0` for critical items.
 
 **With beads (Large codebase - module breakdown):**
 ```markdown
-# Audit Summary - [Stage Name]
+# Readiness Report - [Stage Name]
 
 ## Codebase Structure
 Analyzed [N] modules:
@@ -245,7 +245,7 @@ Use `bd list -l module:api` to see API-specific items, or `bd list -l cross-cutt
 
 **With TodoWrite (Simple/Medium codebase):**
 ```markdown
-# Audit Summary - [Stage Name]
+# Readiness Report - [Stage Name]
 
 ## Readiness: [X/10]
 - ✅ [Y] critical items complete
@@ -272,7 +272,7 @@ Execute todos manually.
 
 **With TodoWrite (Large codebase):**
 ```markdown
-# Audit Summary - [Stage Name]
+# Readiness Report - [Stage Name]
 
 ## Codebase Structure
 Analyzed [N] modules with individual readiness scores
@@ -309,13 +309,13 @@ Execute todos manually by module.
 
 ## Stage-Specific Examples
 
-**Stage 2 (Early Validation) Audit:**
+**Stage 2 (Early Validation) Evaluation:**
 - Don't penalize for missing tests
 - Do penalize for missing README or inability to deploy
 - Celebrate simple architecture
 - Flag any over-engineering
 
-**Stage 4 (Early Scaling) Audit:**
+**Stage 4 (Early Scaling) Evaluation:**
 - Do penalize for missing tests and monitoring
 - Do penalize for architectural issues
 - Don't penalize for technical debt
