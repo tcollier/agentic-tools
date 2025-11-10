@@ -146,6 +146,43 @@ Our tests cover:
    - Summary sections
    - Next steps
 
+5. **Module-Based Audits (Large Codebases)**: Proper handling of complex repositories
+   - Detects codebase size (simple <50 files, medium 50-200, large >200)
+   - Breaks large codebases into logical modules
+   - Creates module-specific action items with labels
+   - Provides per-module readiness scores
+   - Identifies cross-cutting concerns
+
+## Module-Based Audit Feature
+
+The `/audit` command intelligently scales based on repository size:
+
+### Size Detection
+- **Simple** (<50 files): Single-pass audit
+- **Medium** (50-200 files): Single-pass with structural attention
+- **Large** (>200 files or 4+ modules): Module-by-module audit
+
+### Module Identification
+For large codebases, automatically detects:
+- Monorepo packages (`packages/*`, `apps/*`)
+- Tech boundaries (backend vs frontend vs mobile)
+- Service boundaries (microservices)
+- Domain boundaries (feature-based organization)
+
+### Benefits
+- **Scalability**: Handles massive codebases without overwhelming output
+- **Clarity**: Per-module readiness scores show where to focus
+- **Organization**: Module labels (`-l module:api`) enable filtered views
+- **Cross-cutting**: Identifies shared infrastructure needs
+
+### Test Coverage
+Our test suite validates:
+- Correct size classification
+- Proper module identification
+- Module-labeled action items (beads) or prefixed todos
+- Per-module and aggregate readiness scores
+- Cross-cutting concern detection
+
 ## Interpreting Results
 
 ### Success

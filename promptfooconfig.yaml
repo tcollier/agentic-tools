@@ -196,6 +196,82 @@ tests:
       - type: llm-rubric
         value: 'Recommendations reference specific files to create or edit'
 
+  # Module-Based Audit Tests (Large Codebases)
+  - description: 'Should detect large codebase and break into modules'
+    vars:
+      context: |
+        Company stage: 4 (Early Scaling)
+        Codebase: Monorepo with 250+ files
+        Structure:
+          - src/api/ (Python FastAPI, 80 files)
+          - src/web/ (React TypeScript, 120 files)
+          - src/mobile/ (React Native, 50 files)
+    assert:
+      - type: llm-rubric
+        value: 'Detects this is a large codebase (>200 files, multiple modules)'
+      - type: llm-rubric
+        value: 'Identifies separate modules: API, web frontend, and mobile app'
+      - type: llm-rubric
+        value: 'Plans to audit each module separately'
+
+  - description: 'Module-based audit should create labeled action items'
+    vars:
+      context: |
+        Company stage: 3
+        Large codebase with modules: backend (Node.js), frontend (React), mobile (iOS)
+        Backend missing tests, frontend missing error boundaries, mobile missing error handling
+        Using beads for tracking
+    assert:
+      - type: llm-rubric
+        value: 'Creates action items with module labels like -l module:backend, -l module:frontend'
+      - type: llm-rubric
+        value: 'Each action item clearly indicates which module it belongs to'
+      - type: icontains-any
+        value: ['module:', '[backend]', '[frontend]', '[mobile]']
+
+  - description: 'Module-based audit should provide per-module readiness scores'
+    vars:
+      context: |
+        Company stage: 4
+        Large codebase audited by module:
+          - API: Good tests, missing monitoring (7/10)
+          - Web: No tests, missing error handling (4/10)
+          - Mobile: No tests, missing offline support (3/10)
+    assert:
+      - type: llm-rubric
+        value: 'Provides individual readiness scores for each module'
+      - type: llm-rubric
+        value: 'Provides overall aggregate readiness score'
+      - type: llm-rubric
+        value: 'Summary includes module breakdown section'
+
+  - description: 'Small codebase should NOT use module-based approach'
+    vars:
+      context: |
+        Company stage: 2
+        Codebase: Simple Python CLI tool, 15 files, single purpose
+    assert:
+      - type: llm-rubric
+        value: 'Detects this is a simple codebase (<50 files)'
+      - type: llm-rubric
+        value: 'Audits the entire codebase as a whole, not broken into modules'
+      - type: not-icontains
+        value: 'module:'
+
+  - description: 'Should identify cross-cutting concerns in module-based audit'
+    vars:
+      context: |
+        Company stage: 4
+        Large monorepo with 5 services
+        All services missing: centralized logging, monitoring, CI/CD
+    assert:
+      - type: llm-rubric
+        value: 'Identifies cross-cutting concerns that affect multiple modules'
+      - type: icontains-any
+        value: ['cross-cutting', 'infrastructure', 'shared']
+      - type: llm-rubric
+        value: 'Creates action items for infrastructure/shared concerns'
+
   # Beads vs TodoWrite Tests
   - description: 'Should offer beads installation if not found'
     vars:

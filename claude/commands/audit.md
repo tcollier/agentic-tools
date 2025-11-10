@@ -36,35 +36,83 @@ Perform a stage-appropriate technical audit of this codebase, producing a concre
 
    Show the stage descriptions from the criteria doc to help them choose.
 
-3. **Explore the codebase:** Use the Task tool with subagent_type="Explore" and thoroughness="medium" to understand the codebase structure, tech stack, and current state.
+3. **Assess codebase size and structure:** Quickly survey the repository to determine audit strategy:
+   - Run `find . -type f -name "*.js" -o -name "*.ts" -o -name "*.py" -o -name "*.go" -o -name "*.java" -o -name "*.rb" -o -name "*.php" | wc -l` to count code files
+   - Check for monorepo structure (packages/*, apps/*, services/*)
+   - Identify distinct tech stacks or domains
 
-4. **Evaluate against stage criteria:** Focus on what matters for their stage:
+   **Size classification:**
+   - **Simple** (<50 files, single purpose): Audit as a whole
+   - **Medium** (50-200 files, or 2-3 modules): Audit as a whole with extra attention to structure
+   - **Large** (>200 files, or 4+ distinct modules): Break into modules and audit separately
+
+4. **Identify modules (for Large codebases only):**
+
+   For large codebases, identify logical boundaries:
+   - **Monorepo packages:** Each package/* or apps/* directory
+   - **Tech stack boundaries:** Separate backend (api/, server/) from frontend (web/, client/) from mobile (ios/, android/)
+   - **Service boundaries:** For microservices, each service/* directory
+   - **Domain boundaries:** If organized by feature (auth/, billing/, notifications/)
+
+   List the modules you'll audit separately. Example:
+   ```
+   Modules identified:
+   1. Backend API (src/api) - Python FastAPI
+   2. Web Frontend (src/web) - React + TypeScript
+   3. Mobile App (src/mobile) - React Native
+   4. Shared Libraries (src/shared) - TypeScript utilities
+   ```
+
+5. **Explore the codebase:**
+
+   **For Simple/Medium codebases:**
+   - Use the Task tool with subagent_type="Explore" and thoroughness="medium" to understand the entire codebase structure, tech stack, and current state
+
+   **For Large codebases (module-by-module):**
+   - For each module identified in step 4:
+     - Use the Task tool with subagent_type="Explore" and thoroughness="medium" to understand that specific module
+     - Focus on: module purpose, tech stack, dependencies on other modules, current state
+     - Note module-specific gaps and strengths
+   - After all modules are explored, identify cross-cutting concerns (shared infrastructure, common patterns, etc.)
+
+6. **Evaluate against stage criteria:** Focus on what matters for their stage:
    - ✅ What's already in place (from "Critical" for their stage)
    - ❌ What's missing (from "Critical" for their stage)
    - ⚠️ What needs improvement
    - ✨ What they have that doesn't matter yet (potential over-engineering)
 
-5. **Create concrete action plan:**
+7. **Create concrete action plan:**
+
+   **For Simple/Medium codebases:**
+   - Create action items for the entire codebase
+
+   **For Large codebases:**
+   - Create module-specific action items (tag with module name in labels/description)
+   - Create cross-cutting action items (infrastructure, shared concerns)
+   - Group related items that span modules
 
    **If using beads:**
    - Create issues with `bd create` for each action item
    - Set appropriate priority: `-p 0` (critical), `-p 1` (important), `-p 2` (nice to have)
    - Set type: `-t task` for most items, `-t bug` for fixes
    - Add labels for categorization: `-l backend,security,docs` etc
+   - **For large codebases:** Add module labels: `-l module:api`, `-l module:web`, `-l cross-cutting`
    - Create dependencies for ordered work: `bd dep add <child> <parent> --type blocks`
    - Return issue IDs in the summary
 
    **If using TodoWrite:**
    - Create todos with TodoWrite (note: won't persist across sessions)
    - Use standard todo format
+   - **For large codebases:** Prefix todos with module name: "[API] Add error logging", "[Web] Add loading states"
 
    **All action items must be:**
    - **Specific:** "Add .gitignore for Python project" NOT "Fix version control"
    - **Actionable:** Clear what file to create/edit and what to add
    - **Prioritized:** Critical items first, then important, defer what doesn't matter
    - **Stage-appropriate:** Only include what matters for their current stage
+   - **Module-scoped (for large codebases):** Clearly indicate which module each item belongs to
 
-6. **Generate summary report:** After creating action items, provide a brief summary report
+8. **Generate summary report:** After creating action items, provide a brief summary report
 
 ## Beads Issues (Recommended)
 
@@ -118,7 +166,7 @@ bd dep add bd-<child> bd-a1b2 --type blocks
 
 After creating action items, provide a brief summary:
 
-**With beads:**
+**With beads (Simple/Medium codebase):**
 ```markdown
 # Audit Summary - [Stage Name]
 
@@ -146,7 +194,58 @@ Use `bd ready` to see ready work, or `bd list --priority 0` for critical items.
 - Or implement manually: `bd show <issue-id>` for details
 ```
 
-**With TodoWrite:**
+**With beads (Large codebase - module breakdown):**
+```markdown
+# Audit Summary - [Stage Name]
+
+## Codebase Structure
+Analyzed [N] modules:
+1. **Backend API** (src/api) - Python/FastAPI - Readiness: 7/10
+2. **Web Frontend** (src/web) - React/TypeScript - Readiness: 5/10
+3. **Mobile App** (src/mobile) - React Native - Readiness: 4/10
+4. **Shared Libraries** (src/shared) - TypeScript - Readiness: 8/10
+
+## Overall Readiness: [X/10]
+- ✅ [Y] critical items complete
+- ❌ [Z] items need attention across all modules
+
+## Module Highlights
+
+### Backend API (Readiness: 7/10)
+- ✅ Good: Tests, error handling, API docs
+- ❌ Missing: Monitoring, rate limiting
+
+### Web Frontend (Readiness: 5/10)
+- ✅ Good: Component structure, TypeScript
+- ❌ Missing: Error boundaries, loading states, tests
+
+### Mobile App (Readiness: 4/10)
+- ✅ Good: Navigation setup
+- ❌ Missing: Offline support, error handling, tests
+
+### Shared Libraries (Readiness: 8/10)
+- ✅ Good: Well-documented, tested, typed
+- ❌ Missing: Changelog
+
+## Action Items Created
+- P0 (Critical): [count] issues
+  - module:api: [bd-a1b2, bd-f14c]
+  - module:web: [bd-3e7a, bd-b5c9]
+  - cross-cutting: [bd-x1y2]
+- P1 (Important): [count] issues
+
+Use `bd list -l module:api` to see API-specific items, or `bd list -l cross-cutting` for infrastructure work.
+
+## What Doesn't Matter Yet
+[Stage-appropriate exclusions]
+
+## Next Steps
+- Run `bd ready` to see what's ready to work on
+- Run `/ready` to auto-implement the action plan
+- Or implement by module: `bd list -l module:api --priority 0`
+```
+
+**With TodoWrite (Simple/Medium codebase):**
 ```markdown
 # Audit Summary - [Stage Name]
 
@@ -171,6 +270,34 @@ Note: TodoWrite items won't persist across sessions. Consider installing beads f
 
 ## Next Steps
 Run `/ready` to implement the action plan, or execute todos manually.
+```
+
+**With TodoWrite (Large codebase):**
+```markdown
+# Audit Summary - [Stage Name]
+
+## Codebase Structure
+Analyzed [N] modules with individual readiness scores
+
+## Overall Readiness: [X/10]
+- ✅ [Y] critical items complete
+- ❌ [Z] items need attention across all modules
+
+## Module Breakdown
+- **Backend API** (7/10) - [X] items
+- **Web Frontend** (5/10) - [Y] items
+- **Mobile App** (4/10) - [Z] items
+- **Cross-cutting** - [W] items
+
+## Gaps to Address
+Todos are prefixed with module names: [API], [Web], [Mobile], [Cross-cutting]
+- Critical: [count] items
+- Important: [count] items
+
+Note: TodoWrite items won't persist across sessions. Consider installing beads for better module tracking.
+
+## Next Steps
+Run `/ready` to implement the action plan, or execute todos manually by module.
 ```
 
 ## Approach
