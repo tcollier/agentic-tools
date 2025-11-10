@@ -15,7 +15,7 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 AGENTS_SOURCE="$REPO_ROOT/claude/agents"
 COMMANDS_SOURCE="$REPO_ROOT/claude/commands"
 CRITERIA_SOURCE="$REPO_ROOT/claude/production-criteria.md"
-PREFS_EXAMPLE_SOURCE="$REPO_ROOT/claude/prototype-preferences.example.json"
+# PREFS_EXAMPLE_SOURCE removed - no longer needed
 
 # Installation mode (will be set by args or interactive prompt)
 INSTALL_MODE=""
@@ -54,9 +54,7 @@ while [[ $# -gt 0 ]]; do
       echo "  $0 --project /path/to/proj   # Install to /path/to/proj/.claude/"
       echo ""
       echo "Available commands:"
-      echo "  /prototype   - Build rapid prototypes for 10+ platforms"
       echo "  /audit       - Audit code and create action plan for current stage"
-      echo "  /ready       - Execute audit action plan (runs /audit if needed)"
       exit 0
       ;;
     *)
@@ -172,27 +170,13 @@ if [[ -d "$COMMANDS_SOURCE" ]]; then
   fi
 fi
 
-# Install preferences example if it doesn't exist
+# Install production criteria (always overwrite to get latest)
 if [[ "$IS_PROJECT_INSTALL" == true ]]; then
-  PREFS_TARGET="$(dirname "$AGENTS_TARGET_DIR")/prototype-preferences.json"
   CRITERIA_TARGET="$(dirname "$AGENTS_TARGET_DIR")/production-criteria.md"
 else
-  PREFS_TARGET="$HOME/.claude/prototype-preferences.json"
   CRITERIA_TARGET="$HOME/.claude/production-criteria.md"
 fi
 
-if [[ ! -f "$PREFS_TARGET" ]]; then
-  echo -e "${BLUE}Installing preferences template...${NC}"
-  if [[ -f "$PREFS_EXAMPLE_SOURCE" ]]; then
-    cp "$PREFS_EXAMPLE_SOURCE" "$PREFS_TARGET"
-    echo -e "  ${GREEN}✓${NC} Created $PREFS_TARGET"
-    echo -e "  ${YELLOW}→${NC} Edit this file to customize your platform preferences"
-  fi
-else
-  echo -e "${YELLOW}Preferences file already exists at $PREFS_TARGET (skipping)${NC}"
-fi
-
-# Install production criteria (always overwrite to get latest)
 if [[ -f "$CRITERIA_SOURCE" ]]; then
   echo -e "${BLUE}Installing production criteria...${NC}"
   if [[ -f "$CRITERIA_TARGET" ]]; then
@@ -214,18 +198,14 @@ if [[ "$IS_PROJECT_INSTALL" == true ]]; then
   echo -e "Configuration: ${BLUE}$(dirname "$COMMANDS_TARGET_DIR")${NC}"
   echo ""
   echo "To use in this project:"
-  echo -e "  ${BLUE}/prototype [description]${NC}   - Build a rapid prototype"
-  echo -e "  ${BLUE}/audit${NC}                     - Audit and create action plan"
-  echo -e "  ${BLUE}/ready${NC}                     - Execute the action plan"
+  echo -e "  ${BLUE}/audit${NC}   - Audit code and create stage-appropriate action plan"
 else
   echo -e "Commands installed globally to: ${BLUE}$COMMANDS_TARGET_DIR${NC}"
   [[ -d "$AGENTS_TARGET_DIR" ]] && echo -e "Agents installed globally to: ${BLUE}$AGENTS_TARGET_DIR${NC}"
   echo -e "Configuration: ${BLUE}$HOME/.claude${NC}"
   echo ""
   echo "To use in any project:"
-  echo -e "  ${BLUE}/prototype [description]${NC}   - Build a rapid prototype"
-  echo -e "  ${BLUE}/audit${NC}                     - Audit and create action plan"
-  echo -e "  ${BLUE}/ready${NC}                     - Execute the action plan"
+  echo -e "  ${BLUE}/audit${NC}   - Audit code and create stage-appropriate action plan"
 fi
 
 if [[ -d "$AGENTS_SOURCE" ]] && [[ -n "$(find "$AGENTS_SOURCE" -maxdepth 1 -name "*.md" -not -name "README.md" 2>/dev/null)" ]]; then

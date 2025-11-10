@@ -1,6 +1,6 @@
 # Production Readiness Criteria
 
-This document defines what makes a codebase production-ready based on company stage. Used by `/ready` and `/audit` commands.
+This document defines what makes a codebase production-ready based on company stage. Used by the `/audit` command.
 
 ## Company Stages
 

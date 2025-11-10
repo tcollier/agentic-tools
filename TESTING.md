@@ -275,12 +275,12 @@ npx promptfoo view
 
 ## Testing Other Commands
 
-To test `/prototype` or `/ready`:
+To test additional commands you create:
 
-1. Create a new config file (e.g., `promptfoo-prototype.yaml`)
+1. Create a new config file (e.g., `promptfoo-mycommand.yaml`)
 2. Update the `prompts` section to reference the new command
 3. Write test cases specific to that command
-4. Run with: `npx promptfoo eval -c promptfoo-prototype.yaml`
+4. Run with: `npx promptfoo eval -c promptfoo-mycommand.yaml`
 
 ## CI/CD Integration
 
@@ -349,6 +349,6 @@ export ANTHROPIC_API_KEY="your-key"
 
 - Run the tests: `npm test`
 - View results: `npm run test:ui`
-- Add tests for `/prototype` and `/ready` commands
+- Add tests for new commands as you create them
 - Set up CI/CD integration
 - Monitor token usage trends

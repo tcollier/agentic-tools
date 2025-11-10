@@ -143,7 +143,7 @@ tests:
       - type: icontains
         value: 'next steps'
 
-  - description: 'Should suggest beads commands or /ready for next steps'
+  - description: 'Should suggest beads commands for next steps'
     vars:
       context: |
         Company stage: 2
@@ -151,7 +151,7 @@ tests:
         Created 5 action items (3 P0, 2 P1)
     assert:
       - type: icontains-any
-        value: ['bd ready', 'bd list', '/ready']
+        value: ['bd ready', 'bd list', 'bd show']
       - type: llm-rubric
         value: 'Explains how to proceed with implementation'
 

@@ -2,7 +2,7 @@
 
 Perform a stage-appropriate technical audit of this codebase, producing a concrete action plan for improvements.
 
-**Purpose:** This command evaluates the codebase and creates an implementation-ready action plan. Use `/ready` to execute the plan, or implement items manually.
+**Purpose:** This command evaluates the codebase and creates an implementation-ready action plan.
 
 ## Process
 
@@ -190,7 +190,6 @@ Use `bd ready` to see ready work, or `bd list --priority 0` for critical items.
 
 ## Next Steps
 - Run `bd ready` to see what's ready to work on
-- Run `/ready` to auto-implement the action plan
 - Or implement manually: `bd show <issue-id>` for details
 ```
 
@@ -241,7 +240,6 @@ Use `bd list -l module:api` to see API-specific items, or `bd list -l cross-cutt
 
 ## Next Steps
 - Run `bd ready` to see what's ready to work on
-- Run `/ready` to auto-implement the action plan
 - Or implement by module: `bd list -l module:api --priority 0`
 ```
 
@@ -269,7 +267,7 @@ Note: TodoWrite items won't persist across sessions. Consider installing beads f
 - Example: Cost optimization (Stage 4 - not at scale)
 
 ## Next Steps
-Run `/ready` to implement the action plan, or execute todos manually.
+Execute todos manually.
 ```
 
 **With TodoWrite (Large codebase):**
@@ -297,7 +295,7 @@ Todos are prefixed with module names: [API], [Web], [Mobile], [Cross-cutting]
 Note: TodoWrite items won't persist across sessions. Consider installing beads for better module tracking.
 
 ## Next Steps
-Run `/ready` to implement the action plan, or execute todos manually by module.
+Execute todos manually by module.
 ```
 
 ## Approach

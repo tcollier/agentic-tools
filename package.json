@@ -1,7 +1,7 @@
 {
   "name": "agentic-tools",
   "version": "1.0.0",
-  "description": "Claude Code commands for rapid prototyping, auditing, and production readiness",
+  "description": "Claude Code command for stage-appropriate codebase auditing",
   "private": true,
   "scripts": {
     "test": "promptfoo eval",
@@ -9,9 +9,7 @@
     "test:watch": "promptfoo eval --watch",
     "test:filter": "promptfoo eval --filter",
     "test:verbose": "promptfoo eval --verbose",
-    "view": "promptfoo view",
-    "test:prototype": "promptfoo eval -c promptfoo-prototype.yaml",
-    "test:ready": "promptfoo eval -c promptfoo-ready.yaml"
+    "view": "promptfoo view"
   },
   "keywords": [
     "claude",
