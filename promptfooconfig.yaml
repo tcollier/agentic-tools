@@ -1,0 +1,230 @@
+description: 'Test /audit command for stage-appropriate recommendations and action item quality'
+
+# LLM provider configuration
+providers:
+  - id: anthropic:messages:claude-sonnet-4-5-20250929
+    config:
+      temperature: 0.2  # Lower temperature for more consistent outputs
+
+# Load the audit command prompt
+prompts:
+  - file://claude/commands/audit.md
+
+# Default test configuration
+defaultTest:
+  options:
+    timeout: 60000  # Audit takes longer, allow 60s
+
+# Test cases covering different scenarios
+tests:
+  # Process Adherence Tests
+  - description: 'Should check for beads first'
+    vars:
+      context: |
+        You are auditing a Python web app. The user has not mentioned beads.
+        Codebase has: main.py, README.md, .git directory, no tests.
+    assert:
+      - type: llm-rubric
+        value: 'Asks about beads or mentions checking for beads issue tracker'
+      - type: llm-rubric
+        value: 'Asks user which company stage they are at (1-6)'
+
+  - description: 'Should read production-criteria.md'
+    vars:
+      context: |
+        You are auditing a Node.js API. User said they are at stage 2 (Early Validation).
+        The .claude/production-criteria.md file exists.
+    assert:
+      - type: llm-rubric
+        value: 'References or reads the production-criteria.md file to understand stages'
+      - type: llm-rubric
+        value: 'Uses Task tool with Explore to understand the codebase'
+
+  # Stage-Appropriate Recommendations
+  - description: 'Stage 2 should NOT penalize for missing tests'
+    vars:
+      context: |
+        Company stage: 2 (Early Validation)
+        Codebase: Python FastAPI app with main.py, no tests, basic README, can deploy to Heroku
+        Current state: Git repo, .gitignore present, no test framework
+    assert:
+      - type: llm-rubric
+        value: 'Does not create critical (P0) action items for adding tests'
+      - type: llm-rubric
+        value: 'Explicitly mentions that tests do not matter at this stage'
+      - type: llm-rubric
+        value: 'Focuses on deployment capability and basic stability'
+
+  - description: 'Stage 2 SHOULD require README and deployment'
+    vars:
+      context: |
+        Company stage: 2 (Early Validation)
+        Codebase: Python app with main.py, no README, no deployment setup, has .git
+        Current state: Code runs locally but no documentation
+    assert:
+      - type: llm-rubric
+        value: 'Creates critical (P0) action items for README with setup instructions'
+      - type: llm-rubric
+        value: 'Creates action items for deployment capability'
+      - type: icontains
+        value: 'readme'
+
+  - description: 'Stage 4 SHOULD require tests and monitoring'
+    vars:
+      context: |
+        Company stage: 4 (Early Scaling)
+        Codebase: Large Python API, 50+ files, no tests, no monitoring, no CI/CD
+        Current state: Has README, git, deployment working, but missing observability
+    assert:
+      - type: llm-rubric
+        value: 'Creates critical or important action items for adding tests'
+      - type: llm-rubric
+        value: 'Creates action items for monitoring and observability'
+      - type: llm-rubric
+        value: 'Mentions that tests DO matter at this stage'
+      - type: not-icontains
+        value: 'cost optimization'  # Stage 4 should not worry about this yet
+
+  - description: 'Stage 4 should NOT worry about cost optimization'
+    vars:
+      context: |
+        Company stage: 4 (Early Scaling)
+        Codebase: Node.js API, has tests, CI/CD, monitoring, but could be cheaper
+        Current state: All P0 items done, spending $500/month on cloud
+    assert:
+      - type: llm-rubric
+        value: 'Explicitly states that cost optimization does not matter at this stage'
+      - type: not-icontains
+        value: 'reduce costs'
+
+  # Action Item Quality Tests
+  - description: 'Should create SPECIFIC action items (not vague)'
+    vars:
+      context: |
+        Company stage: 3 (Proven Concept)
+        Codebase: Python app, no .gitignore, no environment variable setup
+        Current state: Credentials hardcoded in code
+    assert:
+      - type: llm-rubric
+        value: 'Action items are specific with file names and exact content to add, not vague suggestions'
+      - type: llm-rubric
+        value: 'Mentions specific files like .gitignore, .env.example with actual patterns/content'
+      - type: not-icontains-any
+        value: ['fix version control', 'improve configuration', 'add documentation']  # Vague bad examples
+
+  - description: 'Action items should have clear priorities'
+    vars:
+      context: |
+        Company stage: 2 (Early Validation)
+        Codebase: React app, missing README, .gitignore, and tests
+        Using beads for issue tracking
+    assert:
+      - type: llm-rubric
+        value: 'Assigns P0 (critical) priority to README and .gitignore'
+      - type: llm-rubric
+        value: 'Does not prioritize tests as critical for stage 2'
+      - type: icontains-any
+        value: ['-p 0', 'p0', 'critical']
+
+  # Output Format Tests
+  - description: 'Should generate summary report with readiness score'
+    vars:
+      context: |
+        Company stage: 3 (Proven Concept)
+        Codebase: Node API with 60% of P0 items complete
+        Audit found 3 critical gaps and 5 important improvements
+    assert:
+      - type: llm-rubric
+        value: 'Includes a readiness score (e.g., "Readiness: 6/10")'
+      - type: llm-rubric
+        value: 'Summarizes what is working well'
+      - type: llm-rubric
+        value: 'Lists what does not matter yet for this stage'
+      - type: icontains
+        value: 'next steps'
+
+  - description: 'Should suggest beads commands or /ready for next steps'
+    vars:
+      context: |
+        Company stage: 2
+        Using beads for tracking
+        Created 5 action items (3 P0, 2 P1)
+    assert:
+      - type: icontains-any
+        value: ['bd ready', 'bd list', '/ready']
+      - type: llm-rubric
+        value: 'Explains how to proceed with implementation'
+
+  # Edge Cases
+  - description: 'Should celebrate simplicity at early stages'
+    vars:
+      context: |
+        Company stage: 1 (Exploratory)
+        Codebase: Single Python file with basic functionality, no git
+        Current state: Minimal prototype
+    assert:
+      - type: llm-rubric
+        value: 'Praises intentional simplicity and not having complex architecture'
+      - type: llm-rubric
+        value: 'Does not create many action items since stage 1 only needs to run locally'
+      - type: llm-rubric
+        value: 'Explicitly says what the user should NOT worry about'
+
+  - description: 'Should flag over-engineering at early stages'
+    vars:
+      context: |
+        Company stage: 2 (Early Validation)
+        Codebase: Microservices architecture, Kubernetes, extensive CI/CD, cost optimization
+        Current state: Complex infrastructure, only 2 paying customers
+    assert:
+      - type: llm-rubric
+        value: 'Points out over-engineering and complexity that does not matter at stage 2'
+      - type: icontains-any
+        value: ['over-engineered', 'complexity', 'premature']
+      - type: llm-rubric
+        value: 'Suggests simplification or deprioritizing complex infrastructure'
+
+  - description: 'Should cite specific files and line numbers'
+    vars:
+      context: |
+        Company stage: 3
+        Codebase: Python app, found hardcoded credentials in config.py line 15
+        Found missing error handling in api/routes.py
+    assert:
+      - type: llm-rubric
+        value: 'Cites specific file paths and line numbers when identifying issues'
+      - type: llm-rubric
+        value: 'Recommendations reference specific files to create or edit'
+
+  # Beads vs TodoWrite Tests
+  - description: 'Should offer beads installation if not found'
+    vars:
+      context: |
+        User runs /audit but beads is not installed
+        Running: bd info --json 2>/dev/null returns error
+    assert:
+      - type: llm-rubric
+        value: 'Explains benefits of beads (persistent, git-backed, dependencies)'
+      - type: llm-rubric
+        value: 'Asks user if they want to install beads'
+      - type: icontains
+        value: 'install'
+
+  - description: 'Should use TodoWrite if user declines beads'
+    vars:
+      context: |
+        User declined beads installation
+        Need to create action items
+    assert:
+      - type: llm-rubric
+        value: 'Uses TodoWrite to create todos'
+      - type: llm-rubric
+        value: 'Warns that todos will not persist across sessions'
+
+# Evaluation options
+evaluateOptions:
+  maxConcurrency: 2  # Run 2 tests in parallel
+  showProgressBar: true
+
+# Output configuration
+outputPath: ./promptfoo-results.json
