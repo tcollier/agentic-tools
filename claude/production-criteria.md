@@ -130,3 +130,79 @@ Not all companies follow this linearly - choose the stage that best matches your
 **P0 (Must Have):** Version control, basic tests, error handling, README, environment config
 **P1 (Should Have):** Comprehensive tests, logging, code quality tools, security basics, build docs
 **P2 (Nice to Have):** CI/CD, monitoring, advanced security, performance optimization
+
+## 11. AI Agent Readiness
+
+**Stage-Appropriate Priority:**
+- **Stages 1-2:** Not required (P2 or skip)
+- **Stage 3:** P2 (Nice to have)
+- **Stage 4+:** P1 (Should have)
+
+Makes the codebase easier for AI coding agents (like Claude Code, Cursor, GitHub Copilot) to understand and work with effectively.
+
+### Documentation
+- [ ] Clear README with project overview and architecture
+- [ ] ARCHITECTURE.md or similar explaining system design
+- [ ] CONTRIBUTING.md with development workflow
+- [ ] Clear module/component descriptions
+- [ ] API documentation (if applicable)
+
+### Code Clarity
+- [ ] Descriptive function and variable names (avoid single letters, abbreviations)
+- [ ] Consistent coding patterns and conventions
+- [ ] Comments on complex logic and non-obvious decisions
+- [ ] Type hints/annotations (TypeScript, Python type hints, etc.)
+- [ ] Avoid overly clever code - prefer readable over clever
+
+### Structure
+- [ ] Logical file and directory organization
+- [ ] Clear separation of concerns
+- [ ] Consistent naming conventions across codebase
+- [ ] Well-organized imports/dependencies
+
+### Testing
+- [ ] Good test coverage (helps agents understand expected behavior)
+- [ ] Test names that describe what they're testing
+- [ ] Example usage in tests
+
+### Context
+- [ ] .clinerules or similar for AI-specific instructions (optional)
+- [ ] Clear error messages that explain what went wrong
+- [ ] Comments explaining "why" not just "what"
+
+## 12. LLM Integration Quality
+
+**Applies only if repository uses LLM APIs** (OpenAI, Anthropic, etc.)
+
+**Stage-Appropriate Priority:**
+- **Stages 1-2:** Basic prompt testing (P1 for Stage 2)
+- **Stage 3:** Evals required (P1)
+- **Stage 4+:** Comprehensive evals and monitoring (P0)
+
+### Prompt Testing (Evals)
+- [ ] Evaluation framework set up (promptfoo, OpenAI evals, or custom)
+- [ ] Test cases for critical prompts
+- [ ] Regression tests to detect quality degradation
+- [ ] LLM-as-judge assertions for semantic correctness
+- [ ] Deterministic assertions where possible
+
+### Monitoring & Observability
+- [ ] Token usage tracking
+- [ ] Cost monitoring and alerting
+- [ ] Latency/performance tracking
+- [ ] Error rate monitoring for LLM calls
+- [ ] Success rate metrics
+
+### Quality Assurance
+- [ ] Prompt versioning (track changes to prompts)
+- [ ] Golden test datasets
+- [ ] Performance benchmarks (cost per request, latency)
+- [ ] Output validation and sanitization
+- [ ] Fallback handling for LLM failures
+
+### Best Practices
+- [ ] Prompts stored in files, not hardcoded
+- [ ] Environment-based model selection (dev vs prod)
+- [ ] Rate limiting and retry logic
+- [ ] Caching where appropriate
+- [ ] Security: no PII in prompts without consent

@@ -75,13 +75,28 @@ Evaluate your repository's readiness for your current company stage, producing a
      - Note module-specific gaps and strengths
    - After all modules are explored, identify cross-cutting concerns (shared infrastructure, common patterns, etc.)
 
-6. **Evaluate against stage criteria:** Focus on what matters for their stage:
+6. **Detect LLM usage (if present):** Check if the repository uses LLM APIs
+   - Search for common LLM API imports/packages:
+     - Python: `import openai`, `import anthropic`, `from langchain`, `from llama_index`
+     - JavaScript/TypeScript: `from 'openai'`, `from '@anthropic-ai/sdk'`, `from 'langchain'`
+     - Package files: `openai`, `anthropic`, `langchain`, `llama-index` in requirements.txt, package.json, etc.
+   - If detected: Note that LLM Integration Quality criteria will be evaluated
+   - If not detected: Skip LLM Integration Quality criteria
+
+7. **Evaluate against stage criteria:** Focus on what matters for their stage:
    - ✅ What's already in place (from "Critical" for their stage)
    - ❌ What's missing (from "Critical" for their stage)
    - ⚠️ What needs improvement
    - ✨ What they have that doesn't matter yet (potential over-engineering)
 
-7. **Create concrete action plan:**
+   **Always evaluate (stage-appropriate):**
+   - Essential criteria (1-10 from production-criteria.md)
+   - AI Agent Readiness (criteria 11) - when stage >= 3
+
+   **Conditionally evaluate (if LLM usage detected in step 6):**
+   - LLM Integration Quality (criteria 12) - stage-appropriate priority
+
+8. **Create concrete action plan:**
 
    **For Simple/Medium codebases:**
    - Create action items for the entire codebase
@@ -112,7 +127,7 @@ Evaluate your repository's readiness for your current company stage, producing a
    - **Stage-appropriate:** Only include what matters for their current stage
    - **Module-scoped (for large codebases):** Clearly indicate which module each item belongs to
 
-8. **Generate AUDIT.md file:** Create a comprehensive audit document at the repository root
+9. **Generate AUDIT.md file:** Create a comprehensive audit document at the repository root
 
    **For Simple/Medium codebases:**
 
@@ -151,7 +166,21 @@ Evaluate your repository's readiness for your current company stage, producing a
    - ❌ README.md missing (see AUDIT-002)
    - ❌ No setup instructions (see AUDIT-003)
 
-   [Continue for all criteria categories...]
+   ### AI Agent Readiness
+   (Only include if Stage >= 3)
+   - ✅ Clear README with architecture overview
+   - ❌ ARCHITECTURE.md missing (see AUDIT-XXX)
+   - ✅ Descriptive function names
+   - ❌ Missing type hints/annotations (see AUDIT-XXX)
+
+   ### LLM Integration Quality
+   (Only include if LLM usage detected)
+   - ❌ No eval framework configured (see AUDIT-XXX)
+   - ❌ No token usage tracking (see AUDIT-XXX)
+   - ✅ Prompts stored in files
+   - ❌ No prompt versioning (see AUDIT-XXX)
+
+   [Continue for all other criteria categories...]
 
    ## Priority Action Items
 
@@ -286,7 +315,7 @@ Evaluate your repository's readiness for your current company stage, producing a
    4. Re-run `/repo-readiness` after implementing changes to track progress
    ```
 
-9. **Provide summary in chat:** After creating AUDIT.md and action items, provide a brief summary
+10. **Provide summary in chat:** After creating AUDIT.md and action items, provide a brief summary
 
 ## Beads Issues (Recommended)
 
