@@ -2,11 +2,12 @@
 
 Stage-aware engineering tools for Claude Code that help you build at the right level of complexity for your company's current stage.
 
-**Four Commands:**
+**Five Commands:**
 - `/repo-readiness` - Audit your codebase
 - `/design-feature` - Generate stage-appropriate designs
 - `/review-design` - Review designs for stage-appropriateness
 - `/tasks-from-design` - Break designs into right-sized tasks
+- `/tech-news` - Get personalized tech news digests
 
 ## Commands
 
@@ -69,6 +70,29 @@ Break down approved designs into right-sized implementation tasks:
 - Fallback: TodoWrite with `[EPIC]` markers
 - Creates dependencies, labels, and priorities for organized implementation
 - **Key benefit:** Start immediately with concrete tasks, defer detailed planning until you're ready
+
+### `/tech-news`
+Stay informed with personalized tech news digests based on your repository's dependencies:
+- **Bimodal usage:**
+  - **Run now:** Get news in chat immediately (one-time)
+  - **Set up automation:** Guided wizard for weekly Slack digests
+- **Personalized news:** Only shows updates relevant to YOUR tech stack
+- **Comprehensive coverage:**
+  - 🚀 Major version releases
+  - ⚠️ Security advisories (CVEs)
+  - 📦 Breaking changes & deprecations
+  - 💡 Best practices & patterns
+- **Dependency status:** Separate section showing outdated packages
+- **Smart delivery:**
+  - Detects tech stack automatically (Node.js, Python, Go, Ruby, Rust, etc.)
+  - Searches past month with emphasis on past week
+  - Posts to Slack via webhook or displays in chat
+- **GitHub Actions integration:**
+  - Automated weekly digests (default: Monday 7am)
+  - Guided setup wizard walks through entire configuration
+  - Tests Slack connection during setup
+  - One-time setup, runs forever
+- **Key benefit:** Never miss important updates for the technologies you actually use
 
 ## Installation
 
@@ -288,6 +312,43 @@ bd list -t epic            # Shows: "Implement checkout flow" (epic)
 # Continue implementing...
 ```
 
+### Workflow 5: Tech News Digest
+
+```bash
+# Quick use - get news now
+/tech-news
+# Choose: "1) Run now"
+# Result: News displayed in chat
+
+# Or set up automation for weekly digests
+/tech-news
+# Choose: "2) Set up automation"
+# Follow guided wizard:
+#   1. Confirm prerequisites
+#   2. Choose schedule (e.g., Monday 7am)
+#   3. Set up Slack webhook (optional)
+#   4. Test Slack connection
+#   5. Create GitHub Actions workflow
+#   6. Add GitHub secrets
+#   7. Commit workflow file
+#   8. Test run
+# Result: Weekly digests delivered to Slack automatically
+
+# Example output (run now mode):
+# 📰 Tech News Digest - 2025-11-11
+#
+# 🚀 NEW RELEASES
+# • React 19.0.0 - New hooks API
+# • Node.js 22.0.0 LTS - Performance improvements
+#
+# ⚠️ SECURITY ADVISORIES
+# • Express CVE-2025-1234 (HIGH) - Update immediately
+#
+# 📦 OUTDATED DEPENDENCIES
+# • react: 18.2.0 → 19.0.0
+# • express: 4.18.2 → 4.19.2 ⚠️ Security update
+```
+
 ## File Structure
 
 After installation:
@@ -297,7 +358,8 @@ After installation:
 │   ├── repo-readiness.md         # Stage-aware readiness evaluation
 │   ├── design-feature.md         # Interactive feature design generation
 │   ├── review-design.md          # Stage-aware design review
-│   └── tasks-from-design.md      # Design → tasks breakdown
+│   ├── tasks-from-design.md      # Design → tasks breakdown
+│   └── tech-news.md              # Personalized tech news digests
 ├── config.json                   # Your company stage (auto-created)
 └── production-criteria.md        # 6 stages + what matters at each
 
@@ -310,6 +372,10 @@ designs/                           # Feature design documents
 # After using /tasks-from-design (if using beads):
 # Tasks stored in .beads/ (git-backed)
 # Query with: bd list, bd ready, bd list -t epic
+
+# After using /tech-news automation setup:
+.github/workflows/
+└── tech-news.yml                 # Automated weekly digest workflow
 ```
 
 ## Philosophy
