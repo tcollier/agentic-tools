@@ -1,0 +1,6 @@
+{
+  "companyStage": 3,
+  "stageName": "Proven Concept",
+  "lastUpdated": "2025-11-11",
+  "_comment": "This file stores your company stage for stage-aware commands. Valid stages: 1 (Exploratory), 2 (Early Validation), 3 (Proven Concept), 4 (Early Scaling), 5 (Hypergrowth), 6 (Established)"
+}
