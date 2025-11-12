@@ -1,27 +1,42 @@
 # BEADS Issues Summary
 
-Generated: 2025-11-11 18:45:55
+Generated: 2025-11-11 18:48:16
 
 ## Overview
 
 - **Total Issues**: 4
-- **Open**: 1
+- **Open**: 0
 - **In Progress**: 0
 - **Blocked**: 0
-- **Closed**: 3
+- **Closed**: 4
 
 ## Open Issues
 
+*No open issues*
+
+## In Progress
+
+*No issues in progress*
+
+## Blocked
+
+*No blocked issues*
+
+## Recently Closed
+
 | Status | ID | Title | Priority | Type |
 |--------|----|----|----------|------|
-| 🟢 | agentic-tools-fxo | Create /configure-agents command for stage-specific AGENTS.md criteria | P2 | feature |
+| ✅ | agentic-tools-fxo | Create /configure-agents command for stage-specific AGENTS.md criteria | P2 | feature |
+| ✅ | agentic-tools-q8w | Create Claude command for unique vibe coding interview questions | P2 | feature |
+| ✅ | agentic-tools-cqw | Improve BEADS.md output format | P2 | task |
+| ✅ | agentic-tools-5oq | Configure pre-commit hook for generate-beads-summary.sh | P2 | task |
 
 <details>
 <summary>View detailed descriptions</summary>
 
 ### agentic-tools-fxo: Create /configure-agents command for stage-specific AGENTS.md criteria
 
-**Priority**: P2 | **Type**: feature
+**Priority**: P2 | **Type**: feature | **Closed**: 2025-11-11T18:47:41.339893-08:00
 
 Design and implement a Claude Code slash command that adds or updates stage-specific development criteria in AGENTS.md to guide AI coding assistants.
 
@@ -85,27 +100,6 @@ The command should add/update a section like:
 - [ ] Updates existing section without breaking other content
 - [ ] Criteria align with production-criteria.md
 - [ ] Works for all four company stages
-
-</details>
-
-## In Progress
-
-*No issues in progress*
-
-## Blocked
-
-*No blocked issues*
-
-## Recently Closed
-
-| Status | ID | Title | Priority | Type |
-|--------|----|----|----------|------|
-| ✅ | agentic-tools-q8w | Create Claude command for unique vibe coding interview questions | P2 | feature |
-| ✅ | agentic-tools-cqw | Improve BEADS.md output format | P2 | task |
-| ✅ | agentic-tools-5oq | Configure pre-commit hook for generate-beads-summary.sh | P2 | task |
-
-<details>
-<summary>View detailed descriptions</summary>
 
 ### agentic-tools-q8w: Create Claude command for unique vibe coding interview questions
 
