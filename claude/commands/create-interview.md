@@ -1,4 +1,4 @@
-# Vibe Code Interview Generator
+# Create Interview Generator
 
 Generate unique, stage-appropriate coding interview questions for evaluating how candidates use AI agents to write code.
 
@@ -56,7 +56,7 @@ Create a randomized coding challenge that:
 
 **Question File Format:**
 ```markdown
-# Vibe Code Challenge: [Descriptive Title]
+# Coding Challenge: [Descriptive Title]
 
 **Time Target:** 20-30 minutes
 **Date Generated:** [ISO timestamp]
@@ -101,7 +101,7 @@ Create an interviewer-only rubric file that works for all question variants.
 
 **Rubric File Format:**
 ```markdown
-# Vibe Code Interview Rubric
+# Interview Evaluation Rubric
 
 **Evaluation Guide** - Interviewer Only
 **Date Generated:** [ISO timestamp]
@@ -318,7 +318,7 @@ interview-questions/rubric-[timestamp].md
 
 **Example invocation:**
 ```
-User: /vibe-code
+User: /create-interview
 ```
 
 **Example output files:**

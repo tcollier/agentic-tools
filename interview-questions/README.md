@@ -1,10 +1,10 @@
-# Vibe Code Interview System
+# AI Coding Interview System
 
 A system for generating unique, AI-focused coding interview questions that evaluate how candidates use AI coding assistants to solve real-world problems.
 
 ## Overview
 
-The Vibe Code interview is a 30-35 minute coding exercise designed to assess:
+The interview is a 30-35 minute coding exercise designed to assess:
 
 1. **How candidates collaborate with AI agents** to write code
 2. **Company values alignment**: Bias to Action, Collaboration, Ownership
@@ -31,7 +31,7 @@ The Vibe Code interview is a 30-35 minute coding exercise designed to assess:
 Run the slash command to generate a unique question:
 
 ```bash
-/vibe-code
+/create-interview
 ```
 
 This creates two files:
@@ -40,7 +40,7 @@ This creates two files:
 
 ### Conducting the Interview
 
-1. **Before interview**: Generate materials using `/vibe-code`
+1. **Before interview**: Generate materials using `/create-interview`
 2. **Start of interview**: Share `question-[timestamp].md` with candidate
 3. **During Part 1**: Observe using values/skills from rubric
 4. **During Part 2**: Ask candidate to review their code
@@ -154,7 +154,7 @@ Ask open-ended questions:
 
 To adapt this system:
 
-1. **Update company values**: Edit `claude/commands/vibe-code.md` to reflect your values
+1. **Update company values**: Edit `claude/commands/create-interview.md` to reflect your values
 2. **Adjust problem domains**: Modify the problem domain list for your tech stack
 3. **Change time targets**: Update difficulty calibration for your needs
 4. **Add skills**: Extend the skills rubric for role-specific assessment
