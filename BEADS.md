@@ -1,14 +1,14 @@
 # BEADS Issues Summary
 
-Generated: 2025-11-11 16:10:37
+Generated: 2025-11-11 16:11:06
 
 ## Overview
 
 - **Total Issues**: 4
-- **Open**: 3
+- **Open**: 2
 - **In Progress**: 0
 - **Blocked**: 0
-- **Closed**: 1
+- **Closed**: 2
 
 ## Open Issues
 
@@ -32,22 +32,6 @@ Potential improvements:
 - Format dates in human-readable relative time (e.g., '2 days ago')
 
 The goal is to make BEADS.md more informative and easier to scan while maintaining readability for non-technical stakeholders.
-
-### agentic-tools-5oq: Configure pre-commit hook for generate-beads-summary.sh
-
-**Priority**: P2 | **Type**: null
-
-Set up a pre-commit git hook that automatically runs generate-beads-summary.sh to keep BEADS.md in sync with the latest issue status.
-
-The hook should:
-- Run bd sync --flush-only to sync the beads database to JSONL
-- Execute ext/beads/generate-beads-summary.sh to regenerate BEADS.md
-- Stage both .beads/beads.jsonl and BEADS.md files
-- Handle errors gracefully and provide helpful output
-
-This ensures BEADS.md is always up-to-date in version control without manual intervention.
-
-Reference: ext/beads/README.md:37-52 has example implementation
 
 ### agentic-tools-q8w: Create Claude command for unique vibe coding interview questions
 
@@ -78,11 +62,11 @@ The command should help interviewers create fresh, engaging technical questions 
 *Issues with no open blockers*
 
 - **agentic-tools-q8w**: Create Claude command for unique vibe coding interview questions (P2, null)
-- **agentic-tools-5oq**: Configure pre-commit hook for generate-beads-summary.sh (P2, null)
 - **agentic-tools-cqw**: Improve BEADS.md output format (P2, null)
 
 ## Recently Closed
 
+- **agentic-tools-5oq**: Configure pre-commit hook for generate-beads-summary.sh (Closed: 2025-11-11T16:10:49.9495-08:00)
 - **agentic-tools-1kz**: Test generate-beads-summary.sh script (Closed: 2025-11-11T16:07:42.996845-08:00)
 
 ---
