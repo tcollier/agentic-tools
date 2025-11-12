@@ -1,41 +1,18 @@
 # BEADS Issues Summary
 
-Generated: 2025-11-11 18:11:36
+Generated: 2025-11-11 18:15:57
 
 ## Overview
 
 - **Total Issues**: 3
-- **Open**: 1
+- **Open**: 0
 - **In Progress**: 0
 - **Blocked**: 0
-- **Closed**: 2
+- **Closed**: 3
 
 ## Open Issues
 
-| Status | ID | Title | Priority | Type |
-|--------|----|----|----------|------|
-| 🟢 | agentic-tools-q8w | Create Claude command for unique vibe coding interview questions | P2 | feature |
-
-<details>
-<summary>View detailed descriptions</summary>
-
-### agentic-tools-q8w: Create Claude command for unique vibe coding interview questions
-
-**Priority**: P2 | **Type**: feature
-
-Design and implement a Claude Code slash command that generates creative, unique coding interview questions based on the 'vibe' or style requested by the user.
-
-Features to include:
-- Accept parameters for difficulty level (easy/medium/hard)
-- Support different vibes/themes (e.g., startup, gaming, finance, social media)
-- Generate problem statement with clear requirements
-- Include example input/output
-- Provide hints and follow-up questions
-- Suggest optimal time complexity targets
-
-The command should help interviewers create fresh, engaging technical questions that assess coding skills while being memorable and relevant to different contexts.
-
-</details>
+*No open issues*
 
 ## In Progress
 
@@ -49,11 +26,28 @@ The command should help interviewers create fresh, engaging technical questions 
 
 | Status | ID | Title | Priority | Type |
 |--------|----|----|----------|------|
+| ✅ | agentic-tools-q8w | Create Claude command for unique vibe coding interview questions | P2 | feature |
 | ✅ | agentic-tools-cqw | Improve BEADS.md output format | P2 | task |
 | ✅ | agentic-tools-5oq | Configure pre-commit hook for generate-beads-summary.sh | P2 | task |
 
 <details>
 <summary>View detailed descriptions</summary>
+
+### agentic-tools-q8w: Create Claude command for unique vibe coding interview questions
+
+**Priority**: P2 | **Type**: feature | **Closed**: 2025-11-11T18:15:42.62736-08:00
+
+Design and implement a Claude Code slash command that generates creative, unique coding interview questions based on the 'vibe' or style requested by the user.
+
+Features to include:
+- Accept parameters for difficulty level (easy/medium/hard)
+- Support different vibes/themes (e.g., startup, gaming, finance, social media)
+- Generate problem statement with clear requirements
+- Include example input/output
+- Provide hints and follow-up questions
+- Suggest optimal time complexity targets
+
+The command should help interviewers create fresh, engaging technical questions that assess coding skills while being memorable and relevant to different contexts.
 
 ### agentic-tools-cqw: Improve BEADS.md output format
 
