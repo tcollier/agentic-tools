@@ -1,18 +1,92 @@
 # BEADS Issues Summary
 
-Generated: 2025-11-11 18:16:32
+Generated: 2025-11-11 18:25:44
 
 ## Overview
 
-- **Total Issues**: 3
-- **Open**: 0
+- **Total Issues**: 4
+- **Open**: 1
 - **In Progress**: 0
 - **Blocked**: 0
 - **Closed**: 3
 
 ## Open Issues
 
-*No open issues*
+| Status | ID | Title | Priority | Type |
+|--------|----|----|----------|------|
+| 🟢 | agentic-tools-fxo | Create /configure-agents command for stage-specific AGENTS.md criteria | P2 | feature |
+
+<details>
+<summary>View detailed descriptions</summary>
+
+### agentic-tools-fxo: Create /configure-agents command for stage-specific AGENTS.md criteria
+
+**Priority**: P2 | **Type**: feature
+
+Design and implement a Claude Code slash command that adds or updates stage-specific development criteria in AGENTS.md to guide AI coding assistants.
+
+## Context
+
+Currently AGENTS.md provides general guidance for AI agents working in this repo. However, development priorities and quality standards vary significantly by company stage (pre-seed, seed, growth, mature). AI agents need stage-appropriate context to make good architectural and implementation decisions.
+
+## Proposed Solution
+
+Create a `/configure-agents` command that:
+
+1. **Prompts for company stage** (if not already configured)
+   - Pre-seed/Stealth
+   - Seed/Early
+   - Growth
+   - Mature
+
+2. **Generates/updates a "Stage-Specific Criteria" section in AGENTS.md** with:
+   - Development priorities for this stage
+   - Architecture complexity guidelines
+   - Quality/testing expectations
+   - Performance/scalability considerations
+   - Documentation requirements
+   - Deployment/infrastructure guidance
+
+3. **Is idempotent**: Can be rerun to update the section when stage changes or criteria evolve
+
+## Implementation Details
+
+- Use the same stage criteria from `claude/production-criteria.md`
+- Insert/update a clearly marked section in AGENTS.md (between delimiters or under a specific heading)
+- Preserve other content in AGENTS.md
+- Support both initial creation and updates
+
+## Example Output
+
+The command should add/update a section like:
+
+```markdown
+## Stage-Specific Development Criteria
+
+**Company Stage**: Growth
+
+### Development Priorities
+- Ship features quickly while maintaining quality
+- Build for scale but avoid premature optimization
+- Invest in observability and debugging tools
+...
+
+### Architecture Guidelines
+- Appropriate abstractions (not too few, not too many)
+- Consider multi-tenancy implications
+...
+```
+
+## Success Criteria
+
+- [ ] `/configure-agents` command exists
+- [ ] Command prompts for stage if not configured
+- [ ] Generates appropriate criteria based on stage
+- [ ] Updates existing section without breaking other content
+- [ ] Criteria align with production-criteria.md
+- [ ] Works for all four company stages
+
+</details>
 
 ## In Progress
 
