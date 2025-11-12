@@ -1,0 +1,8 @@
+# Ignore all generated interview materials
+# These contain unique questions and should not be committed to prevent leaking
+
+question-*.md
+rubric-*.md
+
+# Allow README documentation
+!README.md
