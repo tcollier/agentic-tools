@@ -1,27 +1,48 @@
 # BEADS Issues Summary
 
-Generated: 2025-11-11 16:19:26
+Generated: 2025-11-11 16:42:01
 
 ## Overview
 
-- **Total Issues**: 4
-- **Open**: 1
-- **In Progress**: 0
-- **Blocked**: 0
-- **Closed**: 3
+- **Total Issues**: 16
+- **Open**: 4
+- **In Progress**: 3
+- **Blocked**: 3
+- **Closed**: 6
 
 ## Open Issues
 
 | Status | ID | Title | Priority | Type |
 |--------|----|----|----------|------|
-| 🟢 | agentic-tools-q8w | Create Claude command for unique vibe coding interview questions | P2 | null |
+| 🟢 | agentic-tools-1iy | Test Bug: Authentication timeout on slow networks | P0 | bug |
+| 🟢 | agentic-tools-o59 | Test Feature: Dark mode theme switcher | P1 | feature |
+| 🟢 | agentic-tools-0r8 | Test Epic: Migrate to microservices architecture | P2 | epic |
+| 🟢 | agentic-tools-q8w | Create Claude command for unique vibe coding interview questions | P2 | feature |
 
 <details>
 <summary>View detailed descriptions</summary>
 
+### agentic-tools-1iy: Test Bug: Authentication timeout on slow networks
+
+**Priority**: P0 | **Type**: bug
+
+Users experiencing authentication timeouts when connecting from networks with >500ms latency. Need to implement exponential backoff and increase default timeout from 5s to 15s.
+
+### agentic-tools-o59: Test Feature: Dark mode theme switcher
+
+**Priority**: P1 | **Type**: feature
+
+Add a dark mode toggle to the application that persists user preference and respects system theme settings.
+
+### agentic-tools-0r8: Test Epic: Migrate to microservices architecture
+
+**Priority**: P2 | **Type**: epic
+
+Break monolithic application into independently deployable microservices. Start with user service, then payment processing, then notification system.
+
 ### agentic-tools-q8w: Create Claude command for unique vibe coding interview questions
 
-**Priority**: P2 | **Type**: null
+**Priority**: P2 | **Type**: feature
 
 Design and implement a Claude Code slash command that generates creative, unique coding interview questions based on the 'vibe' or style requested by the user.
 
@@ -39,32 +60,101 @@ The command should help interviewers create fresh, engaging technical questions 
 
 ## In Progress
 
-*No issues in progress*
+| Status | ID | Title | Priority | Type |
+|--------|----|----|----------|------|
+| 🔄 | agentic-tools-6h8 | Test Task: Optimize database queries | P1 | task |
+| 🔄 | agentic-tools-15h | Test Feature: Export data to CSV | P2 | feature |
+| 🔄 | agentic-tools-sm8 | Test Chore: Update dependencies to latest versions | P3 | chore |
+
+<details>
+<summary>View detailed descriptions</summary>
+
+### agentic-tools-6h8: Test Task: Optimize database queries
+
+**Priority**: P1 | **Type**: task | **Assignee**: bob@example.com
+
+Several dashboard queries are taking >2 seconds. Need to add appropriate indexes and optimize JOIN operations.
+
+### agentic-tools-15h: Test Feature: Export data to CSV
+
+**Priority**: P2 | **Type**: feature | **Assignee**: charlie@example.com
+
+Allow users to export their data in CSV format for analysis in Excel or other tools.
+
+### agentic-tools-sm8: Test Chore: Update dependencies to latest versions
+
+**Priority**: P3 | **Type**: chore | **Assignee**: Unassigned
+
+Update all npm packages to address security vulnerabilities reported by npm audit. Focus on critical and high severity issues first.
+
+</details>
 
 ## Blocked
 
-*No blocked issues*
+| Status | ID | Title | Priority | Type |
+|--------|----|----|----------|------|
+| 🚫 | agentic-tools-jrh | Test Task: Deploy to production | P0 | task |
+| 🚫 | agentic-tools-do3 | Test Bug: Mobile app crashes on iOS 18 | P0 | bug |
+| 🚫 | agentic-tools-9ou | Test Feature: Real-time collaboration | P1 | feature |
 
-## Ready to Work On
+<details>
+<summary>View detailed descriptions</summary>
 
-*Issues with no open blockers*
+### agentic-tools-jrh: Test Task: Deploy to production
 
-- **agentic-tools-q8w**: Create Claude command for unique vibe coding interview questions (P2, null)
+**Priority**: P0 | **Type**: task
+
+Deploy version 2.0 to production servers. Waiting for security audit approval.
+
+### agentic-tools-do3: Test Bug: Mobile app crashes on iOS 18
+
+**Priority**: P0 | **Type**: bug
+
+Application crashes immediately on launch for iOS 18 users. Waiting for Apple to approve our TestFlight build to investigate.
+
+### agentic-tools-9ou: Test Feature: Real-time collaboration
+
+**Priority**: P1 | **Type**: feature
+
+Enable multiple users to edit documents simultaneously with conflict resolution. Blocked pending WebSocket infrastructure upgrade.
+
+</details>
 
 ## Recently Closed
 
 | Status | ID | Title | Priority | Type |
 |--------|----|----|----------|------|
-| ✅ | agentic-tools-cqw | Improve BEADS.md output format | P2 | null |
-| ✅ | agentic-tools-5oq | Configure pre-commit hook for generate-beads-summary.sh | P2 | null |
-| ✅ | agentic-tools-1kz | Test generate-beads-summary.sh script | P2 | null |
+| ✅ | agentic-tools-ev5 | Test Chore: Remove deprecated API endpoints | P2 | chore |
+| ✅ | agentic-tools-awj | Test Feature: Add keyboard shortcuts | P2 | feature |
+| ✅ | agentic-tools-9o6 | Test Bug: Login button misaligned on Firefox | P3 | bug |
+| ✅ | agentic-tools-cqw | Improve BEADS.md output format | P2 | task |
+| ✅ | agentic-tools-5oq | Configure pre-commit hook for generate-beads-summary.sh | P2 | task |
+| ✅ | agentic-tools-1kz | Test generate-beads-summary.sh script | P2 | task |
 
 <details>
 <summary>View detailed descriptions</summary>
 
+### agentic-tools-ev5: Test Chore: Remove deprecated API endpoints
+
+**Priority**: P2 | **Type**: chore | **Closed**: 2025-11-11T16:34:04.325189-08:00
+
+Removed /api/v1/legacy endpoints that were deprecated in Q2. Updated documentation and client libraries.
+
+### agentic-tools-awj: Test Feature: Add keyboard shortcuts
+
+**Priority**: P2 | **Type**: feature | **Closed**: 2025-11-11T16:34:04.286951-08:00
+
+Implemented Ctrl+S to save, Ctrl+N for new document, and Ctrl+P for print. Added shortcut reference modal (Ctrl+?).
+
+### agentic-tools-9o6: Test Bug: Login button misaligned on Firefox
+
+**Priority**: P3 | **Type**: bug | **Closed**: 2025-11-11T16:34:04.247076-08:00
+
+Login button appears 5px off-center on Firefox 120+. Fixed by updating CSS flexbox alignment.
+
 ### agentic-tools-cqw: Improve BEADS.md output format
 
-**Priority**: P2 | **Type**: null | **Closed**: 2025-11-11T16:18:31.943773-08:00
+**Priority**: P2 | **Type**: task | **Closed**: 2025-11-11T16:18:31.943773-08:00
 
 Enhance the format and presentation of the BEADS.md file generated by ext/beads/generate-beads-summary.sh.
 
@@ -85,7 +175,7 @@ The goal is to make BEADS.md more informative and easier to scan while maintaini
 
 ### agentic-tools-5oq: Configure pre-commit hook for generate-beads-summary.sh
 
-**Priority**: P2 | **Type**: null | **Closed**: 2025-11-11T16:10:49.9495-08:00
+**Priority**: P2 | **Type**: task | **Closed**: 2025-11-11T16:10:49.9495-08:00
 
 Set up a pre-commit git hook that automatically runs generate-beads-summary.sh to keep BEADS.md in sync with the latest issue status.
 
@@ -101,7 +191,7 @@ Reference: ext/beads/README.md:37-52 has example implementation
 
 ### agentic-tools-1kz: Test generate-beads-summary.sh script
 
-**Priority**: P2 | **Type**: null | **Closed**: 2025-11-11T16:07:42.996845-08:00
+**Priority**: P2 | **Type**: task | **Closed**: 2025-11-11T16:07:42.996845-08:00
 
 Validate that the generate-beads-summary.sh script works correctly by:
 - Running the script in this repository

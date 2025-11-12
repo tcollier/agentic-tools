@@ -57,14 +57,14 @@ echo "Generating $OUTPUT_FILE..."
         # Table view
         echo "| Status | ID | Title | Priority | Type |"
         echo "|--------|----|----|----------|------|"
-        echo "$OPEN_ISSUES" | jq -r '.[] | "| 🟢 | \(.id) | \(.title) | P\(.priority) | \(.type) |"'
+        echo "$OPEN_ISSUES" | jq -r '.[] | "| 🟢 | \(.id) | \(.title) | P\(.priority) | \(.issue_type) |"'
         echo
 
         # Collapsible detailed view
         echo "<details>"
         echo "<summary>View detailed descriptions</summary>"
         echo
-        echo "$OPEN_ISSUES" | jq -r '.[] | "### \(.id): \(.title)\n\n**Priority**: P\(.priority) | **Type**: \(.type)\n\n\(if .description != "" then .description else "(No description)" end)\n"'
+        echo "$OPEN_ISSUES" | jq -r '.[] | "### \(.id): \(.title)\n\n**Priority**: P\(.priority) | **Type**: \(.issue_type)\n\n\(if .description != "" then .description else "(No description)" end)\n"'
         echo "</details>"
         echo
     else
@@ -80,14 +80,14 @@ echo "Generating $OUTPUT_FILE..."
         # Table view
         echo "| Status | ID | Title | Priority | Type |"
         echo "|--------|----|----|----------|------|"
-        echo "$IN_PROGRESS_ISSUES" | jq -r '.[] | "| 🔄 | \(.id) | \(.title) | P\(.priority) | \(.type) |"'
+        echo "$IN_PROGRESS_ISSUES" | jq -r '.[] | "| 🔄 | \(.id) | \(.title) | P\(.priority) | \(.issue_type) |"'
         echo
 
         # Collapsible detailed view
         echo "<details>"
         echo "<summary>View detailed descriptions</summary>"
         echo
-        echo "$IN_PROGRESS_ISSUES" | jq -r '.[] | "### \(.id): \(.title)\n\n**Priority**: P\(.priority) | **Type**: \(.type) | **Assignee**: \(.assignee // "Unassigned")\n\n\(if .description != "" then .description else "(No description)" end)\n"'
+        echo "$IN_PROGRESS_ISSUES" | jq -r '.[] | "### \(.id): \(.title)\n\n**Priority**: P\(.priority) | **Type**: \(.issue_type) | **Assignee**: \(.assignee // "Unassigned")\n\n\(if .description != "" then .description else "(No description)" end)\n"'
         echo "</details>"
         echo
     else
@@ -103,32 +103,18 @@ echo "Generating $OUTPUT_FILE..."
         # Table view
         echo "| Status | ID | Title | Priority | Type |"
         echo "|--------|----|----|----------|------|"
-        echo "$BLOCKED_ISSUES" | jq -r '.[] | "| 🚫 | \(.id) | \(.title) | P\(.priority) | \(.type) |"'
+        echo "$BLOCKED_ISSUES" | jq -r '.[] | "| 🚫 | \(.id) | \(.title) | P\(.priority) | \(.issue_type) |"'
         echo
 
         # Collapsible detailed view
         echo "<details>"
         echo "<summary>View detailed descriptions</summary>"
         echo
-        echo "$BLOCKED_ISSUES" | jq -r '.[] | "### \(.id): \(.title)\n\n**Priority**: P\(.priority) | **Type**: \(.type)\n\n\(if .description != "" then .description else "(No description)" end)\n"'
+        echo "$BLOCKED_ISSUES" | jq -r '.[] | "### \(.id): \(.title)\n\n**Priority**: P\(.priority) | **Type**: \(.issue_type)\n\n\(if .description != "" then .description else "(No description)" end)\n"'
         echo "</details>"
         echo
     else
         echo "*No blocked issues*"
-        echo
-    fi
-
-    # Ready Work
-    echo "## Ready to Work On"
-    echo
-    echo "*Issues with no open blockers*"
-    echo
-    READY_ISSUES=$(bd ready --json 2>/dev/null)
-    if [ "$(echo "$READY_ISSUES" | jq 'length')" -gt 0 ]; then
-        echo "$READY_ISSUES" | jq -r '.[] | "- **\(.id)**: \(.title) (P\(.priority), \(.type))"'
-        echo
-    else
-        echo "*No ready work*"
         echo
     fi
 
@@ -142,14 +128,14 @@ echo "Generating $OUTPUT_FILE..."
         # Table view
         echo "| Status | ID | Title | Priority | Type |"
         echo "|--------|----|----|----------|------|"
-        echo "$RECENT_CLOSED" | jq -r '"| ✅ | \(.id) | \(.title) | P\(.priority) | \(.type) |"'
+        echo "$RECENT_CLOSED" | jq -r '"| ✅ | \(.id) | \(.title) | P\(.priority) | \(.issue_type) |"'
         echo
 
         # Collapsible detailed view
         echo "<details>"
         echo "<summary>View detailed descriptions</summary>"
         echo
-        echo "$RECENT_CLOSED" | jq -r '"### \(.id): \(.title)\n\n**Priority**: P\(.priority) | **Type**: \(.type) | **Closed**: \(.closed_at // "unknown")\n\n\(if .description != "" then .description else "(No description)" end)\n"'
+        echo "$RECENT_CLOSED" | jq -r '"### \(.id): \(.title)\n\n**Priority**: P\(.priority) | **Type**: \(.issue_type) | **Closed**: \(.closed_at // "unknown")\n\n\(if .description != "" then .description else "(No description)" end)\n"'
         echo "</details>"
         echo
 
