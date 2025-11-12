@@ -54,7 +54,19 @@ echo "Generating $OUTPUT_FILE..."
     echo
     OPEN_ISSUES=$(bd list --status open --json 2>/dev/null)
     if [ "$(echo "$OPEN_ISSUES" | jq 'length')" -gt 0 ]; then
+        # Table view
+        echo "| Status | ID | Title | Priority | Type |"
+        echo "|--------|----|----|----------|------|"
+        echo "$OPEN_ISSUES" | jq -r '.[] | "| 🟢 | \(.id) | \(.title) | P\(.priority) | \(.type) |"'
+        echo
+
+        # Collapsible detailed view
+        echo "<details>"
+        echo "<summary>View detailed descriptions</summary>"
+        echo
         echo "$OPEN_ISSUES" | jq -r '.[] | "### \(.id): \(.title)\n\n**Priority**: P\(.priority) | **Type**: \(.type)\n\n\(if .description != "" then .description else "(No description)" end)\n"'
+        echo "</details>"
+        echo
     else
         echo "*No open issues*"
         echo
@@ -65,7 +77,19 @@ echo "Generating $OUTPUT_FILE..."
     echo
     IN_PROGRESS_ISSUES=$(bd list --status in_progress --json 2>/dev/null)
     if [ "$(echo "$IN_PROGRESS_ISSUES" | jq 'length')" -gt 0 ]; then
+        # Table view
+        echo "| Status | ID | Title | Priority | Type |"
+        echo "|--------|----|----|----------|------|"
+        echo "$IN_PROGRESS_ISSUES" | jq -r '.[] | "| 🔄 | \(.id) | \(.title) | P\(.priority) | \(.type) |"'
+        echo
+
+        # Collapsible detailed view
+        echo "<details>"
+        echo "<summary>View detailed descriptions</summary>"
+        echo
         echo "$IN_PROGRESS_ISSUES" | jq -r '.[] | "### \(.id): \(.title)\n\n**Priority**: P\(.priority) | **Type**: \(.type) | **Assignee**: \(.assignee // "Unassigned")\n\n\(if .description != "" then .description else "(No description)" end)\n"'
+        echo "</details>"
+        echo
     else
         echo "*No issues in progress*"
         echo
@@ -76,7 +100,19 @@ echo "Generating $OUTPUT_FILE..."
     echo
     BLOCKED_ISSUES=$(bd list --status blocked --json 2>/dev/null)
     if [ "$(echo "$BLOCKED_ISSUES" | jq 'length')" -gt 0 ]; then
+        # Table view
+        echo "| Status | ID | Title | Priority | Type |"
+        echo "|--------|----|----|----------|------|"
+        echo "$BLOCKED_ISSUES" | jq -r '.[] | "| 🚫 | \(.id) | \(.title) | P\(.priority) | \(.type) |"'
+        echo
+
+        # Collapsible detailed view
+        echo "<details>"
+        echo "<summary>View detailed descriptions</summary>"
+        echo
         echo "$BLOCKED_ISSUES" | jq -r '.[] | "### \(.id): \(.title)\n\n**Priority**: P\(.priority) | **Type**: \(.type)\n\n\(if .description != "" then .description else "(No description)" end)\n"'
+        echo "</details>"
+        echo
     else
         echo "*No blocked issues*"
         echo
@@ -101,7 +137,20 @@ echo "Generating $OUTPUT_FILE..."
     echo
     CLOSED_ISSUES=$(bd list --status closed --json 2>/dev/null)
     if [ "$(echo "$CLOSED_ISSUES" | jq 'length')" -gt 0 ]; then
-        echo "$CLOSED_ISSUES" | jq -r 'sort_by(.closed_at) | reverse | limit(20; .[]) | "- **\(.id)**: \(.title) (Closed: \(.closed_at // "unknown"))"'
+        RECENT_CLOSED=$(echo "$CLOSED_ISSUES" | jq -c 'sort_by(.closed_at) | reverse | limit(20; .[])')
+
+        # Table view
+        echo "| Status | ID | Title | Priority | Type |"
+        echo "|--------|----|----|----------|------|"
+        echo "$RECENT_CLOSED" | jq -r '"| ✅ | \(.id) | \(.title) | P\(.priority) | \(.type) |"'
+        echo
+
+        # Collapsible detailed view
+        echo "<details>"
+        echo "<summary>View detailed descriptions</summary>"
+        echo
+        echo "$RECENT_CLOSED" | jq -r '"### \(.id): \(.title)\n\n**Priority**: P\(.priority) | **Type**: \(.type) | **Closed**: \(.closed_at // "unknown")\n\n\(if .description != "" then .description else "(No description)" end)\n"'
+        echo "</details>"
         echo
 
         TOTAL_CLOSED=$(echo "$CLOSED_ISSUES" | jq 'length')
