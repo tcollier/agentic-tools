@@ -2,12 +2,13 @@
 
 Stage-aware engineering tools for Claude Code that help you build at the right level of complexity for your company's current stage.
 
-**Five Commands:**
+**Six Commands:**
 - `/repo-readiness` - Audit your codebase
 - `/design-feature` - Generate stage-appropriate designs
 - `/review-design` - Review designs for stage-appropriateness
 - `/tasks-from-design` - Break designs into right-sized tasks
 - `/tech-news` - Get personalized tech news digests
+- `/pr-hygiene` - Draft PRs by default, verify CI, auto-fix failures
 
 ## Commands
 
@@ -93,6 +94,14 @@ Stay informed with personalized tech news digests based on your repository's dep
   - Tests Slack connection during setup
   - One-time setup, runs forever
 - **Key benefit:** Never miss important updates for the technologies you actually use
+
+### `/pr-hygiene`
+Enforce consistent PR hygiene when agents create or update pull requests:
+- **Draft by default:** Always creates PRs as drafts unless explicitly told otherwise
+- **CI verification:** Watches CI checks after creating or pushing to a PR
+- **Auto-fix failures:** Diagnoses and fixes CI failures (up to 3 iterations)
+- **Transparent reporting:** Summarizes PR status, CI results, and any fixes applied
+- **Always-on option:** Can be added to CLAUDE.md for automatic enforcement without invoking the command
 
 ## Installation
 
