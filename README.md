@@ -2,13 +2,14 @@
 
 Stage-aware engineering tools for Claude Code that help you build at the right level of complexity for your company's current stage.
 
-**Six Commands:**
+**Seven Commands:**
 - `/repo-readiness` - Audit your codebase
 - `/design-feature` - Generate stage-appropriate designs
 - `/review-design` - Review designs for stage-appropriateness
 - `/tasks-from-design` - Break designs into right-sized tasks
 - `/tech-news` - Get personalized tech news digests
 - `/pr-hygiene` - Draft PRs by default, verify CI, auto-fix failures
+- `/parallel-work` - Split large changes into concurrent worktree-isolated subagents
 
 ## Commands
 
@@ -102,6 +103,14 @@ Enforce consistent PR hygiene when agents create or update pull requests:
 - **Auto-fix failures:** Diagnoses and fixes CI failures (up to 3 iterations)
 - **Transparent reporting:** Summarizes PR status, CI results, and any fixes applied
 - **Always-on option:** Can be added to CLAUDE.md for automatic enforcement without invoking the command
+
+### `/parallel-work`
+Parallelize large code changes using concurrent subagents in isolated git worktrees:
+- **Automatic chunking:** Analyzes the task and splits it into independent, non-overlapping pieces
+- **Worktree isolation:** Each subagent works in its own git worktree so they never conflict
+- **Concurrent execution:** All subagents launch in a single message for maximum parallelism
+- **Merge and verify:** Sequentially merges branches, resolves any conflicts, and runs build/tests
+- **User approval:** Presents the chunk plan before launching subagents
 
 ## Installation
 
