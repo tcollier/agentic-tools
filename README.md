@@ -2,7 +2,7 @@
 
 Stage-aware engineering tools for Claude Code that help you build at the right level of complexity for your company's current stage.
 
-**Seven Commands:**
+**Eight Commands:**
 - `/repo-readiness` - Audit your codebase
 - `/design-feature` - Generate stage-appropriate designs
 - `/review-design` - Review designs for stage-appropriateness
@@ -10,6 +10,7 @@ Stage-aware engineering tools for Claude Code that help you build at the right l
 - `/tech-news` - Get personalized tech news digests
 - `/pr-hygiene` - Draft PRs by default, verify CI, auto-fix failures
 - `/parallel-work` - Split large changes into concurrent worktree-isolated subagents
+- `/review-teammate-pr` - Deep product + technical review of a teammate's PR
 
 ## Commands
 
@@ -111,6 +112,14 @@ Parallelize large code changes using concurrent subagents in isolated git worktr
 - **Concurrent execution:** All subagents launch in a single message for maximum parallelism
 - **Merge and verify:** Sequentially merges branches, resolves any conflicts, and runs build/tests
 - **User approval:** Presents the chunk plan before launching subagents
+
+### `/review-teammate-pr`
+Deep review of a PR authored by another engineer or bot, covering both product direction and technical correctness:
+- **Product "why":** Researches linked Linear issues, design docs, Slack/Buzz threads to understand the motivation and assess whether the change moves things in the right direction
+- **Technical depth:** Correctness, test coverage, error handling, performance, security
+- **UI detail:** Compares against nearby components and linked mockups; flags layout edge cases (overflow, empty state, responsive)
+- **API scrutiny:** Validates naming, request/response shape, versioning, and consistency with neighboring endpoints
+- **Prioritized report:** Findings ranked P0-P3, presented to you first — comments only posted to the PR after your explicit approval
 
 ## Installation
 
